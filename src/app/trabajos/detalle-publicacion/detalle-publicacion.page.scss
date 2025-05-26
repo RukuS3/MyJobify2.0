@@ -1,0 +1,223 @@
+.inicio-content {
+    --background: #ffffff;
+  
+    .inicio-container {
+      padding: 10px 16px;
+  
+      .search-bar {
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        border: 2px solid #b30000;
+        border-radius: 25px;
+        padding: 6px 12px;
+        margin: 10px 0;
+  
+        .search-icon {
+          color: #b30000;
+          font-size: 1.2rem;
+          margin-right: 8px;
+        }
+  
+        input {
+          border: none;
+          outline: none;
+          width: 100%;
+          font-size: 1rem;
+        }
+      }
+
+      .select-pro{
+        margin-top: 10px;
+      }
+  
+      .card {
+        display: flex;
+        justify-content: space-between;
+        background: #fff;
+        border-radius: 12px;
+        padding: 10px;
+        margin-bottom: 12px;
+        box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+  
+        .card-left {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+  
+          h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+          }
+  
+          .rating {
+            display: flex;
+            align-items: center;
+  
+            ion-icon {
+              color: gold;
+              margin-right: 4px;
+            }
+  
+            span {
+              font-weight: bold;
+            }
+          }
+        }
+  
+        .card-right img {
+          width: 80px;
+          height: 60px;
+          object-fit: cover;
+          border-radius: 8px;
+        }
+      }
+    }
+  }
+  
+  .custom-header {
+    --background: #ffffff !important;
+    box-shadow: none;
+    border-bottom: none;
+  
+    .logo {
+      font-size: 1.5rem;
+      font-family: 'Impact', 'Arial Black', sans-serif;
+      color: #b30000;
+    }
+  
+    .profile-avatar img {
+        width: 40px;
+        height: 40px;
+        border: 2px solid #b30000;
+        border-radius: 50%;
+        margin-top: 15px; 
+      }
+  }
+  
+  .custom-footer {
+    --background: #8b0000 !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    z-index: 10;
+    padding-top: 6px;
+  
+    .footer-buttons {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      ion-icon {
+        color: #fff;
+        font-size: 1.5rem;
+      }
+    }
+  }
+  
+
+
+
+
+
+
+
+
+.detalle-content {
+    --background: #ffffff;
+  
+    .detalle-container {
+      padding: 16px;
+  
+      .solicitud-banner {
+        background-color: #b30000;
+        color: white;
+        padding: 12px;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 16px;
+  
+        .botones-respuesta {
+          margin-top: 8px;
+          display: flex;
+          justify-content: center;
+          gap: 10px;
+        }
+      }
+  
+      .detalle-imagen {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 16px;
+      }
+  
+      h2 {
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin-bottom: 4px;
+      }
+  
+      .ubicacion {
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 8px;
+      }
+  
+      .descripcion {
+        color: #555;
+        margin-bottom: 16px;
+      }
+  
+      .rating {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+  
+        ion-icon {
+          color: gold;
+        }
+  
+        span {
+          font-weight: bold;
+        }
+  
+        .rating-label {
+          margin-left: auto;
+          font-size: 0.85rem;
+          color: #666;
+        }
+      }
+  
+      .btn-solicitar {
+        margin-top: 20px;
+        border-radius: 10px;
+        font-weight: bold;
+      }
+    }
+  }
+
+
+  .notification-button {
+  position: absolute;
+  right: 40px;   // mueve hacia la derecha del avatar
+  bottom: -5px;  // mueve hacia abajo del avatar
+  z-index: 2;
+  width: 48px;
+  height: 36px;
+  border-radius: 50%;
+  padding: 6px;
+  background-color: transparent;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+
+  ion-icon {
+    font-size: 60px;
+    color: #b30000;
+  }
+}
+  

@@ -1,0 +1,122 @@
+.custom-header {
+  --background: #ffffff !important;
+  box-shadow: none;
+  border-bottom: none;
+
+  .logo {
+    font-size: 1.5rem;
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    color: #b30000;
+  }
+
+  .profile-avatar img {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #b30000;
+    border-radius: 50%;
+    margin-top: 15px;
+  }
+}
+
+.custom-footer {
+  --background: #8b0000 !important;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  z-index: 10;
+  padding-top: 6px;
+
+  .footer-buttons {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+
+    ion-icon {
+      color: #fff;
+      font-size: 1.5rem;
+    }
+  }
+}
+
+ion-content.chat-preview-content {
+  --background: #6b0000 !important;
+  padding: 0 !important;
+  padding-bottom: 70px !important; // <- Esto evita que el contenido quede detrás del footer
+
+  ion-list {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+  }
+
+  .chat-item {
+    --background: transparent !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    --inner-padding-end: 0px !important;
+    --inner-padding-start: 0px !important;
+    --min-height: 56px;
+
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    border-bottom: 1px solid #ffffff22;
+
+    ion-avatar {
+      width: 40px;
+      height: 40px;
+      margin-right: 12px;
+
+      img {
+        border: 2px solid white;
+        border-radius: 50%;
+      }
+    }
+
+    ion-label {
+      width: 100%;
+
+      h2.message {
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: white;
+      }
+
+      p.time {
+        font-size: 0.75rem;
+        color: #ddd;
+        margin: 0;
+      }
+    }
+  }
+
+  .chat-item:last-child {
+    border-bottom: none !important;
+  }
+}
+
+.notification-button {
+  position: absolute;
+  right: 40px;   // mueve hacia la derecha del avatar
+  bottom: -5px;  // mueve hacia abajo del avatar
+  z-index: 2;
+  width: 48px;
+  height: 36px;
+  border-radius: 50%;
+  padding: 6px;
+  background-color: transparent;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+
+  ion-icon {
+    font-size: 60px;
+    color: #b30000;
+  }
+}

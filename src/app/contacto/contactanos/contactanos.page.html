@@ -1,0 +1,62 @@
+<ion-header class="custom-header">
+  <ion-toolbar>
+    <ion-title class="logo">MYJOBIFY</ion-title>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div style="position: absolute; top: 16px; left: 16px; z-index: 10;">
+    <ion-button fill="clear" size="small" (click)="goBack()">
+      <ion-icon name="arrow-back-outline" slot="icon-only" style="color: #8b0000; font-size: 24px;"></ion-icon>
+    </ion-button>
+  </div>
+  <br>
+  <br>
+  <div style="text-align: center; padding-top: 32px;">
+    <h1 style="font-weight: bold; font-size: 24px; color: #8b0000;">Contáctanos</h1>
+  </div>
+  <br>
+  <br>
+  <br>
+
+    <div style="margin-top: 24px; max-width: 400px; margin-left: auto; margin-right: auto; font-size: 16px; color: #b30000;">
+      
+      <p style="margin: 8px 0; font-weight: bold; color: #8b0000; text-align: left; margin-left: 20px;">
+        Teléfono: <span style="font-weight: normal; margin-left: 8px;">+56 9 2066 7978</span>
+      </p>
+      
+      <p style="margin: 20px 0 6px 0; font-weight: bold; color: #8b0000; text-align: left; margin-left: 20px;">
+        Correo: 
+        <span style="font-weight: normal; margin-left: 8px;">
+          myjobify&#64;gmail.com
+        </span>
+      </p>
+      
+    </div>
+    
+</ion-content>
+
+
+
+<ion-footer>
+  <ion-toolbar class="custom-footer">
+    <ion-buttons class="footer-buttons">
+
+      <ion-button fill="clear" [routerLink]="'/inicio'">
+        <ion-icon name="home" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear">
+        <ion-icon name="bookmark" slot="icon-only"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" [routerLink]="'/chat-preview'">
+        <ion-icon name="chatbubble" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" [routerLink]="'/crear-publicacion'">
+        <ion-icon name="add-circle" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

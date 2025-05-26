@@ -1,0 +1,38 @@
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<ion-content [fullscreen]="true" class="login-content">
+  <div class="login-container">
+    <div class="logo">MYJOBIFY</div>
+    <h2 class="subtitle">Login</h2>
+
+    <ion-item>
+      <ion-input type="text" placeholder="Ingresar rut" [(ngModel)]="rut"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input type="password" placeholder="Ingresar contraseña" [(ngModel)]="password"></ion-input>
+    </ion-item>
+
+    <div class="forgot-password" (click)="forgotPassword()">Olvidé mi contraseña</div>
+
+    <ion-button expand="block" fill="clear" class="login-button" (click)="login()">
+      Iniciar sesión
+    </ion-button>
+
+    <div class="register-text">
+      No tienes cuenta?
+      <span class="register-link" (click)="goToRegister()">Regístrate</span>
+    </div>
+
+
+  </div>
+</ion-content>
