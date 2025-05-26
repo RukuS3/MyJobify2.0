@@ -35,7 +35,8 @@ const routes: Routes = [
   {
     path: 'miperfil',
     loadChildren: () => import('./seguridad/miperfil/miperfil.module').then( m => m.MiperfilPageModule)
-  },  {
+  },
+  {
     path: 'informacion',
     loadChildren: () => import('./seguridad/informacion/informacion.module').then( m => m.InformacionPageModule)
   },
@@ -64,7 +65,7 @@ const routes: Routes = [
     loadChildren: () => import('./contacto/quienes-somos/quienes-somos.module').then( m => m.QuienesSomosPageModule)
   },
   {
-    path: 'edit-publicacion',
+    path: 'edit-publicacion/:id',
     loadChildren: () => import('./seguridad/edit-publicacion/edit-publicacion.module').then( m => m.EditPublicacionPageModule)
   },
 

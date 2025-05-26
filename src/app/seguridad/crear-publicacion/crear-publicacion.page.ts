@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { FirebaseService } from '../../services/firebase.service';
 
 @Component({
   selector: 'app-crear-publicacion',
@@ -9,48 +9,33 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 })
 export class CrearPublicacionPage implements OnInit {
   publicaciones: any[] = [];
-  titulo: string = '';
-  descripcion: string = '';
 
-  constructor(private afs: AngularFirestore, private auth: AngularFireAuth) {}
+  constructor(
+    private afs: AngularFirestore,
+    private firebaseService: FirebaseService
+  ) {}
 
   ngOnInit() {
     this.afs.collection('Publicacion', ref => ref.orderBy('fecha', 'desc'))
-      .valueChanges()
+      .snapshotChanges()
       .subscribe(data => {
-        this.publicaciones = data.map((pub: any) => ({
-          ...pub,
-          fecha: pub.fecha?.toDate ? pub.fecha.toDate() : pub.fecha
-        }));
+        this.publicaciones = data.map(doc => {
+          const data = doc.payload.doc.data() as any;
+          const id = doc.payload.doc.id;
+          return {
+            id,
+            ...data,
+            fecha: data.fecha?.toDate ? data.fecha.toDate() : data.fecha
+          };
+        });
       });
   }
 
-  async crearPublicacion() {
-    const user = await this.auth.currentUser;
-    if (!user) {
-      alert('Debes iniciar sesión para publicar.');
-      return;
-    }
-
-    if (!this.titulo || !this.descripcion) {
-      alert('Completa todos los campos.');
-      return;
-    }
-
-    const nuevaPub = {
-      titulo: this.titulo,
-      descripcion: this.descripcion,
-      fecha: new Date(),
-      creadorUid: user.uid,
-      nombreUsuario: user.displayName || 'Anónimo',
-      imagen: '' // aquí iría la URL si subes imágenes
-    };
-
-    await this.afs.collection('Publicacion').add(nuevaPub);
-
-    // Limpiar campos
-    this.titulo = '';
-    this.descripcion = '';
-    alert('¡Publicación creada!');
+  eliminarPublicacion(id: string) {
+    this.firebaseService.eliminarPublicacion(id).then(() => {
+      this.publicaciones = this.publicaciones.filter(pub => pub.id !== id);
+    }).catch(err => {
+      console.error('Error al eliminar publicación:', err);
+    });
   }
 }

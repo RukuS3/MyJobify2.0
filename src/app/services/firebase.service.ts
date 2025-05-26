@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs/operators';
-import { v4 as uuidv4 } from 'uuid'; // npm install uuid
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +33,9 @@ export class FirebaseService {
         })
       ).subscribe();
     });
+  }
+
+  eliminarPublicacion(id: string) {
+    return this.firestore.collection('Publicacion').doc(id).delete();
   }
 }
