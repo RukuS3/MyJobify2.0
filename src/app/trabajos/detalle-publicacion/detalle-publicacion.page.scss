@@ -1,100 +1,123 @@
 .inicio-content {
-    --background: #ffffff;
-  
-    .inicio-container {
-      padding: 10px 16px;
-  
-      .search-bar {
+  --background: #ffffff;
+
+  .inicio-container {
+    padding: 10px 16px;
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      border: 2px solid #b30000;
+      border-radius: 25px;
+      padding: 8px 12px;
+      margin: 16px 0;
+
+      .search-icon {
+        font-size: 20px;
+        color: #b30000;
+        margin-right: 8px;
+      }
+
+      input {
+        border: none;
+        outline: none;
+        flex: 1;
+        font-size: 16px;
+      }
+    }
+
+    .card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f9f9f9;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 12px;
+      box-shadow: 0 8px px rgba(0, 0, 0, 0.1);
+
+      .card-left {
         display: flex;
-        align-items: center;
-        background-color: #fff;
-        border: 2px solid #b30000;
-        border-radius: 25px;
-        padding: 6px 12px;
-        margin: 10px 0;
-  
-        .search-icon {
-          color: #b30000;
-          font-size: 1.2rem;
-          margin-right: 8px;
+        flex-direction: column;
+
+        h3 {
+          margin: 0;
+          font-size: 16px;
+          font-weight: bold;
         }
-  
-        input {
-          border: none;
-          outline: none;
-          width: 100%;
-          font-size: 1rem;
+
+        .rating {
+          display: flex;
+          align-items: center;
+          margin-top: 4px;
+          //Estrella
+          ion-icon {
+            color: gold;
+            margin-right: 4px;
+          }
+          //Numero de calificacion
+          h5 {
+            font-weight: bold;
+          }
         }
       }
 
-      .select-pro{
-        margin-top: 10px;
-      }
-  
-      .card {
-        display: flex;
-        justify-content: space-between;
-        background: #fff;
-        border-radius: 12px;
-        padding: 10px;
-        margin-bottom: 12px;
-        box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
-  
-        .card-left {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-  
-          h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin: 0 0 4px 0;
-          }
-  
-          .rating {
-            display: flex;
-            align-items: center;
-  
-            ion-icon {
-              color: gold;
-              margin-right: 4px;
-            }
-  
-            span {
-              font-weight: bold;
-            }
-          }
-        }
-  
-        .card-right img {
-          width: 80px;
-          height: 60px;
-          object-fit: cover;
-          border-radius: 8px;
-        }
+      .card-right img {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        object-fit: cover;
       }
     }
   }
+}
+
+.custom-header {
+  --background: #ffffff !important;
+  box-shadow: none;
+  border-bottom: none;
+  padding: -10px;
+
+  //Nombre Logo
+  .logo {
+    font-size: 1.5rem;
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    color: #b30000;
+    margin-left: -130px;
+  }
+
+  .avatar-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .profile-avatar img {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #b30000;
+    border-radius: 50%;
+    margin-top: 15px;
+    margin: 5px;
   
-  .custom-header {
-    --background: #ffffff !important;
-    box-shadow: none;
-    border-bottom: none;
-  
-    .logo {
-      font-size: 1.5rem;
-      font-family: 'Impact', 'Arial Black', sans-serif;
+  }
+
+  .notification-button {
+    position: absolute;
+    right: 40px;
+    width: 40px;
+    height: 25px;
+    margin-left: 10;
+    padding: 5px;
+
+    //icono alerta
+    ion-icon {
+      font-size: 50px;
       color: #b30000;
     }
-  
-    .profile-avatar img {
-        width: 40px;
-        height: 40px;
-        border: 2px solid #b30000;
-        border-radius: 50%;
-        margin-top: 15px; 
-      }
   }
+}
   
   .custom-footer {
     --background: #8b0000 !important;
@@ -118,12 +141,6 @@
     }
   }
   
-
-
-
-
-
-
 
 
 .detalle-content {
@@ -202,22 +219,4 @@
     }
   }
 
-
-  .notification-button {
-  position: absolute;
-  right: 40px;   // mueve hacia la derecha del avatar
-  bottom: -5px;  // mueve hacia abajo del avatar
-  z-index: 2;
-  width: 48px;
-  height: 36px;
-  border-radius: 50%;
-  padding: 6px;
-  background-color: transparent;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-
-  ion-icon {
-    font-size: 60px;
-    color: #b30000;
-  }
-}
   

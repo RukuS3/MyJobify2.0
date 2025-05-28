@@ -1,21 +1,31 @@
 <ion-header class="custom-header">
   <ion-toolbar>
-    <ion-title class="logo">MYJOBIFY</ion-title>
+<ion-title class="logo" slot="start">MYJOBIFY</ion-title>
     <ion-buttons slot="end">
-      <ion-button fill="clear" [routerLink]="'/miperfil'" style="padding: 0; margin: 0;">
-        <ion-avatar class="profile-avatar">
-          <img src="https://e7.pngegg.com/pngimages/789/888/png-clipart-computer-icons-login-person-user-avatar-log-smiley-desktop-wallpaper.png" alt="Perfil">
-        </ion-avatar>
-      </ion-button>
+      <div class="avatar-container">
+        
+          <!-- Boton notificación -->
+        <ion-button class="notification-button" color="danger" fill="clear">
+          <ion-icon name="notifications-outline"></ion-icon>
+        </ion-button>
+
+          <!-- Boton perfil -->
+        <ion-button fill="clear" [routerLink]="'/miperfil'" class="profile-btn">
+          <ion-avatar class="profile-avatar">
+            <img src="https://e7.pngegg.com/pngimages/789/888/png-clipart-computer-icons-login-person-user-avatar-log-smiley-desktop-wallpaper.png" alt="Perfil">
+          </ion-avatar>
+        </ion-button>
+      </div>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="detalle-content">
-  <div class="detalle-container">
+<ion-content class="detalle-content"> 
+  <div class="detalle-container" *ngIf="publicacion; else cargando">
+
     <!-- Notificación superior -->
     <div class="solicitud-banner">
-      <span>Sebastián quiere realizar tu trabajo</span>
+      <span>{{ publicacion.autor || 'Un usuario' }} quiere realizar tu trabajo</span>
       <div class="botones-respuesta">
         <ion-button color="success" size="small">Aceptar</ion-button>
         <ion-button color="danger" size="small">Rechazar</ion-button>
@@ -23,7 +33,7 @@
     </div>
 
     <!-- Imagen principal -->
-    <img [src]="publicacion.imagen" alt="imagen" class="detalle-imagen" />
+    <img [src]="publicacion.imagen" alt="imagen" class="detalle-imagen" *ngIf="publicacion.imagen" />
 
     <!-- Información del trabajo -->
     <h2>{{ publicacion.titulo }}</h2>
@@ -33,14 +43,23 @@
     <!-- Rating -->
     <div class="rating">
       <ion-icon name="star" color="warning"></ion-icon>
-      <span>{{ publicacion.rating }}</span>
+      <span>{{ publicacion.rating || '4.5' }}</span>
       <p class="rating-label">Calificación como buscador</p>
     </div>
 
     <!-- Botón de solicitud -->
     <ion-button expand="block" color="danger" class="btn-solicitar">Solicitar Empleo</ion-button>
   </div>
+
+  <!-- Loader mientras carga -->
+  <ng-template #cargando>
+    <div class="spinner-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando publicación...</p>
+    </div>
+  </ng-template>
 </ion-content>
+
 
 <ion-footer>
   <ion-toolbar class="custom-footer">

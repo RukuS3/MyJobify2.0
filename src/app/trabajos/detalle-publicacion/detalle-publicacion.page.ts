@@ -1,18 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-detalle-publicacion',
   templateUrl: './detalle-publicacion.page.html',
   styleUrls: ['./detalle-publicacion.page.scss'],
 })
-export class DetallePublicacionPage {
-  publicacion = {
-    imagen: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Bugatti_Chiron_1.jpg/960px-Bugatti_Chiron_1.jpg',
-    titulo: 'Lavar auto de vicio',
-    ubicacion: 'Bosque city',
-    descripcion: 'lavame el fockin auto.',
-    rating: 4.5
-  };
 
-  constructor() {}
+export class DetallePublicacionPage implements OnInit {
+  publicacion: any;
+
+  constructor(
+    private route: ActivatedRoute,
+    private afs: AngularFirestore
+  ) {}
+
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.afs.collection('Publicacion').doc(id).valueChanges().subscribe(pub => {
+        this.publicacion = pub;
+      });
+    }
+  }
+
+  
 }

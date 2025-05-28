@@ -21,6 +21,10 @@ const routes: Routes = [
     loadChildren: () => import('./seguridad/registro/registro.module').then( m => m.RegistroPageModule)
   },
   {
+  path: 'trabajos/detalle-publicacion/:id',
+  loadChildren: () => import('./trabajos/detalle-publicacion/detalle-publicacion.module').then(m => m.DetallePublicacionPageModule)
+  },
+  {
     path: 'detalle-publicacion',
     loadChildren: () => import('./trabajos/detalle-publicacion/detalle-publicacion.module').then( m => m.DetallePublicacionPageModule)
   },

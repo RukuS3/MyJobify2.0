@@ -1,11 +1,15 @@
 <ion-header class="custom-header">
   <ion-toolbar>
-    <ion-title class="logo">MYJOBIFY</ion-title>
+<ion-title class="logo" slot="start">MYJOBIFY</ion-title>
     <ion-buttons slot="end">
       <div class="avatar-container">
+        
+          <!-- Boton notificación -->
         <ion-button class="notification-button" color="danger" fill="clear">
           <ion-icon name="notifications-outline"></ion-icon>
         </ion-button>
+
+          <!-- Boton perfil -->
         <ion-button fill="clear" [routerLink]="'/miperfil'" class="profile-btn">
           <ion-avatar class="profile-avatar">
             <img src="https://e7.pngegg.com/pngimages/789/888/png-clipart-computer-icons-login-person-user-avatar-log-smiley-desktop-wallpaper.png" alt="Perfil">
@@ -19,7 +23,7 @@
 <ion-content>
 
   <ion-button expand="block" fill="clear" class="login-button centrado" [routerLink]="['/add-publicacion']">
-    Crear Publicación
+    Crear publicación
   </ion-button>
 
   <ion-list *ngIf="publicaciones.length > 0">
