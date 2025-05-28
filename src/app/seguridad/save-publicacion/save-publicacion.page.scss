@@ -1,0 +1,144 @@
+.inicio-content {
+  --background: #ffffff;
+
+  .inicio-container {
+    padding: 10px 16px;
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      border: 2px solid #b30000;
+      border-radius: 25px;
+      padding: 8px 12px;
+      margin: 16px 0;
+
+      .search-icon {
+        font-size: 20px;
+        color: #b30000;
+        margin-right: 8px;
+      }
+
+      input {
+        border: none;
+        outline: none;
+        flex: 1;
+        font-size: 16px;
+      }
+    }
+
+    .card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f9f9f9;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 12px;
+      box-shadow: 0 8px px rgba(0, 0, 0, 0.1);
+
+      .card-left {
+        display: flex;
+        flex-direction: column;
+
+        h3 {
+          margin: 0;
+          font-size: 16px;
+          font-weight: bold;
+        }
+
+        .rating {
+          display: flex;
+          align-items: center;
+          margin-top: 4px;
+          //Estrella
+          ion-icon {
+            color: gold;
+            margin-right: 4px;
+          }
+          //Numero de calificacion
+          h5 {
+            font-weight: bold;
+          }
+        }
+      }
+
+      .card-right img {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+    }
+  }
+}
+
+.custom-header {
+  --background: #ffffff !important;
+  box-shadow: none;
+  border-bottom: none;
+  padding: -10px;
+
+  //Nombre Logo
+  .logo {
+    font-size: 1.5rem;
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    color: #b30000;
+    margin-left: -130px;
+  }
+
+  .avatar-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .profile-avatar img {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #b30000;
+    border-radius: 50%;
+    margin-top: 15px;
+    margin: 5px;
+  
+  }
+
+  .notification-button {
+    position: absolute;
+    right: 40px;
+    width: 40px;
+    height: 25px;
+    margin-left: 10;
+    padding: 5px;
+
+    //icono alerta
+    ion-icon {
+      font-size: 50px;
+      color: #b30000;
+    }
+  }
+}
+
+//Footer 
+.custom-footer {
+  --background: #b30000 !important;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  z-index: 10;
+  padding: 10px 0;
+
+  .footer-buttons {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+
+    ion-icon {
+      color: #fff;
+      font-size: 1.5rem;
+    }
+  }
+}

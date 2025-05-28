@@ -25,5 +25,7 @@ export class DetallePublicacionPage implements OnInit {
     }
   }
 
+  solicitudEnviada: boolean = true; // Cambia a true si ya envió solicitud
+
   
 }

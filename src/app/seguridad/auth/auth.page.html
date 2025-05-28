@@ -1,41 +1,47 @@
-<ion-header>
-  <ion-toolbar color="danger"> <!-- color rojo -->
-    <ion-title class="logo" slot="start">MYJOBIFY</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding login-content">
+  <div class="login-container">
+    <!-- Logo -->
+    <h1 class="logo">MYJOBIFY</h1>
 
-<ion-content class="ion-padding">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title class="ion-text-center">
-        Iniciar Sesión
-      </ion-card-title>
-    </ion-card-header>
+    <!-- Título -->
+    <h2 class="login-title">Iniciar sesión</h2>
 
-    <ion-card-content>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <ion-item>
-          <ion-label position="floating">Email</ion-label>
-          <ion-input type="email" formControlName="email" required></ion-input>
-        </ion-item>
+    <!-- Formulario -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <ion-input
+        formControlName="email"
+        placeholder="Ingresar correo"
+        type="text"
+        class="custom-input"
+      ></ion-input>
 
-        <ion-item>
-          <ion-label position="floating">Contraseña</ion-label>
-          <ion-input type="password" formControlName="password" required></ion-input>
-        </ion-item>
+      <ion-input
+        formControlName="password"
+        placeholder="Ingresar contraseña"
+        type="password"
+        class="custom-input"
+      ></ion-input>
 
-        <ion-button expand="block" color="danger" type="submit" [disabled]="!loginForm.valid">
-          Iniciar Sesión
-        </ion-button>
+      <!-- Enlace contraseña -->
+      <div class="forgot-password">
+        <a routerLink="/forgot-password">Olvide mi contraseña</a>
+      </div>
 
-        <ion-button expand="block" color="medium" routerLink="/register">
-          Crear Cuenta
-        </ion-button>
+      <!-- Texto cuenta -->
+      <div class="register-text"
+      routerLink="/register">
+        <p>¿No tienes cuenta?</p>
+      </div>
 
-        <ion-button expand="block" fill="clear" color="danger" routerLink="/forgot-password">
-          ¿Olvidaste tu contraseña?
-        </ion-button>
-      </form>
-    </ion-card-content>
-  </ion-card>
+      <!-- Botón iniciar sesión -->
+      <ion-button
+        expand="block"
+        type="submit"
+        [disabled]="!loginForm.valid"
+        class="gradient-button"
+      >
+        Iniciar sesión
+      </ion-button>
+    </form>
+  </div>
 </ion-content>
