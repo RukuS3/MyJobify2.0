@@ -1,43 +1,37 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.page.html',
   styleUrls: ['./auth.page.scss'],
-  standalone: false
 })
 export class AuthPage implements OnInit {
+  loginForm: FormGroup;
 
-  rut: string = '';       // Campo para el RUT del usuario
-  password: string = '';  // Campo para la contraseña del usuario
-
-  constructor(private router: Router) { }
-
-  ngOnInit() {
-    // Inicialización si es necesario
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    });
   }
 
-  login() {
-    if (this.rut && this.password) {
-      console.log('Iniciando sesión con:', this.rut, this.password);
+  ngOnInit() {}
 
-      // Navegar correctamente a la página de inicio
-      this.router.navigateByUrl('/inicio');
-    } else {
-      console.error('Por favor ingrese su RUT y su contraseña.');
-    }
-  }
-
-  // Redirigir a recuperación de contraseña
-  forgotPassword() {
-    console.log('Redirigiendo a la página de recuperación de contraseña...');
-  
-  }
-
-  // Redirigir a registro
-  goToRegister() {
-    console.log('Redirigiendo a la página de registro...');
-    this.router.navigate(['/registro']);
+  onSubmit() {
+    const { email, password } = this.loginForm.value;
+    this.authService.login(email, password)
+      .then(() => {
+        this.router.navigate(['/inicio']);
+      })
+      .catch(err => {
+        alert('Error al iniciar sesión: ' + err.message);
+      });
   }
 }

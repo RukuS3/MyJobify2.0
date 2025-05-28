@@ -68,6 +68,15 @@ const routes: Routes = [
     path: 'edit-publicacion/:id',
     loadChildren: () => import('./seguridad/edit-publicacion/edit-publicacion.module').then( m => m.EditPublicacionPageModule)
   },
+  {
+  path: 'register',
+  loadChildren: () => import('./seguridad/auth/register/register.module').then(m => m.RegisterPageModule)
+},
+{
+  path: 'forgot-password',
+  loadChildren: () => import('./seguridad/auth/forgot-password/forgot-password.module').then(m => m.ForgotPasswordPageModule)
+}
+
 
 ];
 
