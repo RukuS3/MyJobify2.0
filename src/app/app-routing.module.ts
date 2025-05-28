@@ -79,7 +79,11 @@ const routes: Routes = [
 {
   path: 'forgot-password',
   loadChildren: () => import('./seguridad/auth/forgot-password/forgot-password.module').then(m => m.ForgotPasswordPageModule)
-}
+},  {
+    path: 'save-publicacion',
+    loadChildren: () => import('./seguridad/save-publicacion/save-publicacion.module').then( m => m.SavePublicacionPageModule)
+  }
+
 
 
 ];
