@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FirebaseService } from '../../services/firebase.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-add-publicacion',
@@ -21,7 +22,8 @@ export class AddPublicacionPage implements OnInit {
     private location: Location,
     private fb: FormBuilder,
     private firebaseService: FirebaseService,
-    private router: Router
+    private router: Router,
+    private afAuth: AngularFireAuth
   ) {
     this.publicacionForm = this.fb.group({
       titulo: ['', Validators.required],
@@ -34,37 +36,17 @@ export class AddPublicacionPage implements OnInit {
   ngOnInit() {}
 
   goBack() {
-    this.location.back();
+    this.router.navigate(['/crear-publicacion']);
   }
 
   seleccionarImagen() {
     this.fileInput.nativeElement.click();
   }
+
   seleccionarImagenDesdeInput(event: Event) {
-  const input = event.target as HTMLInputElement;
-  if (input.files && input.files[0]) {
-    const file = input.files[0];
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.fotoPublicacion = reader.result as string;
-    };
-    reader.readAsDataURL(file);
-
-    // Aquí podrías subir la imagen a Firebase Storage si quieres.
-    // Por ejemplo:
-    // this.firebaseService.subirImagen(file).then(url => {
-    //   this.fotoPublicacion = url;
-    // });
-  }
-}
-
-  async onImagenSeleccionada(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.imagenFile = file;
-
-      // Vista previa
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
       const reader = new FileReader();
       reader.onload = () => {
         this.fotoPublicacion = reader.result as string;
@@ -87,6 +69,12 @@ export class AddPublicacionPage implements OnInit {
       }
     }
 
+    const user = await this.afAuth.currentUser;
+    if (!user) {
+      console.error("Usuario no autenticado.");
+      return;
+    }
+
     const form = this.publicacionForm.value;
     const nuevaPublicacion = {
       agregarfoto: urlImagen,
@@ -95,12 +83,20 @@ export class AddPublicacionPage implements OnInit {
       montoPaga: Number(form.montoPaga),
       comuna: form.comuna,
       fecha: new Date(),
-      usuarioId: '20'
+      usuarioId: user.uid
     };
 
     try {
+      console.log("Usuario antes de guardar:", user);
       await this.firebaseService.crearPublicacion(nuevaPublicacion);
-      this.router.navigate(['/']);
+      const userAfter = await this.afAuth.currentUser;
+      console.log("Usuario después de guardar:", userAfter);
+
+      if (userAfter) {
+        this.router.navigate(['/crear-publicacion']);
+      } else {
+        console.warn("El usuario se desconectó después de crear la publicación.");
+      }
     } catch (error) {
       console.error("Error al guardar la publicación:", error);
     }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FirebaseService } from '../../services/firebase.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+
 
 @Component({
   selector: 'app-crear-publicacion',
@@ -12,23 +14,35 @@ export class CrearPublicacionPage implements OnInit {
 
   constructor(
     private afs: AngularFirestore,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private afAuth: AngularFireAuth 
   ) {}
 
-  ngOnInit() {
-    this.afs.collection('Publicacion', ref => ref.orderBy('fecha', 'desc'))
-      .snapshotChanges()
-      .subscribe(data => {
-        this.publicaciones = data.map(doc => {
-          const data = doc.payload.doc.data() as any;
-          const id = doc.payload.doc.id;
-          return {
-            id,
-            ...data,
-            fecha: data.fecha?.toDate ? data.fecha.toDate() : data.fecha
-          };
-        });
+  async ngOnInit() {
+    const user = await this.afAuth.currentUser;
+
+    if (!user) {
+      console.error('Usuario no autenticado');
+      return;
+    }
+
+    const uid = user.uid;
+
+    this.afs.collection('Publicacion', ref =>
+      ref.where('usuarioId', '==', uid).orderBy('fecha', 'desc')
+    )
+    .snapshotChanges()
+    .subscribe(data => {
+      this.publicaciones = data.map(doc => {
+        const data = doc.payload.doc.data() as any;
+        const id = doc.payload.doc.id;
+        return {
+          id,
+          ...data,
+          fecha: data.fecha?.toDate ? data.fecha.toDate() : data.fecha
+        };
       });
+    });
   }
 
   eliminarPublicacion(id: string) {

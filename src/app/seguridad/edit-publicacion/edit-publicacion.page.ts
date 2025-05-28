@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-edit-publicacion',
@@ -12,15 +13,18 @@ import { ToastController } from '@ionic/angular';
 export class EditPublicacionPage implements OnInit {
   publicacionForm: FormGroup;
   id: string = '';
-  fotoPublicacion: string = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'; // Imagen por defecto
+  fotoPublicacion: string = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
   @ViewChild('fileInput', { static: false }) fileInput!: ElementRef;
+
+  usuarioActualId: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private afs: AngularFirestore,
     private fb: FormBuilder,
     private router: Router,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private afAuth: AngularFireAuth 
   ) {
     this.publicacionForm = this.fb.group({
       titulo: ['', Validators.required],
@@ -32,10 +36,22 @@ export class EditPublicacionPage implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.usuarioActualId = (await this.afAuth.currentUser)?.uid || '';
     this.id = this.route.snapshot.paramMap.get('id')!;
+
     this.afs.collection('Publicacion').doc(this.id).valueChanges().subscribe((data: any) => {
       if (data) {
+        if (data.usuarioId !== this.usuarioActualId) {
+          this.toastCtrl.create({
+            message: 'No tienes permiso para editar esta publicación',
+            duration: 2000,
+            color: 'danger'
+          }).then(t => t.present());
+          this.router.navigate(['/crear-publicacion']);
+          return;
+        }
+
         this.fotoPublicacion = data.agregarfoto || this.fotoPublicacion;
         this.publicacionForm.patchValue(data);
       }
@@ -54,7 +70,7 @@ export class EditPublicacionPage implements OnInit {
         color: 'success'
       });
       await toast.present();
-      this.router.navigate(['/crear-publicacion']); // Puedes cambiar la ruta si deseas volver a otra vista
+      this.router.navigate(['/crear-publicacion']);
     } catch (error) {
       const toast = await this.toastCtrl.create({
         message: 'Error al actualizar la publicación',
@@ -82,6 +98,6 @@ export class EditPublicacionPage implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/crear-publicacion']); // O cualquier ruta que corresponda
+    this.router.navigate(['/crear-publicacion']);
   }
 }
