@@ -77,68 +77,93 @@
   --background: #ffffff !important;
   box-shadow: none;
   border-bottom: none;
-  padding: -10px;
+  padding: 0 16px;
 
-  //Nombre Logo
+  ion-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+  }
+
   .logo {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-family: 'Impact', 'Arial Black', sans-serif;
     color: #b30000;
-    margin-left: -130px;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    flex: 1;
+  }
+
+  .header-buttons {
+    display: flex;
+    align-items: center;
   }
 
   .avatar-container {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    position: relative;
+    width: 45px;
+    height: 45px;
   }
 
-  .profile-avatar img {
-    width: 40px;
-    height: 40px;
-    border: 2px solid #b30000;
+  .profile-btn {
+    padding: 0;
+    margin: 0;
+  }
+
+  .profile-avatar {
+    width: 35px !important;
+    height: 35px !important;
     border-radius: 50%;
-    margin-top: 15px;
-    margin: 5px;
-  
+    object-fit: cover;
   }
 
   .notification-button {
     position: absolute;
-    right: 40px;
-    width: 40px;
-    height: 25px;
-    margin-left: 10;
-    padding: 5px;
+    bottom: -9px;
+    left: -9px;
+    width: 32px;
+    height: 32px;
+    min-width: auto;
+    padding: 0;
+    background: transparent;
+    border-radius: 50%;
+    z-index: 2;
 
-    //icono alerta
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     ion-icon {
-      font-size: 50px;
+      font-size: 27px; /* ← tamaño correcto y grande */
       color: #b30000;
+    }
+
+    &:active {
+      background-color: rgba(179, 0, 0, 0.1); /* feedback visual */
     }
   }
 }
 
-//Footer 
 .custom-footer {
-  --background: #b30000 !important;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  z-index: 10;
-  padding: 10px 0;
-
+    --background: #8b0000 !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    z-index: 10;
+    padding-top: 6px;
+  
   .footer-buttons {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-
-    ion-icon {
-      color: #fff;
-      font-size: 1.5rem;
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      ion-icon {
+        color: #fff;
+        font-size: 1.5rem;
     }
   }
 }

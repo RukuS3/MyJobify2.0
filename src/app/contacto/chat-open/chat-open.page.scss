@@ -1,71 +1,77 @@
+
 .custom-header {
   --background: #ffffff !important;
   box-shadow: none;
   border-bottom: none;
+  padding: 0 16px;
+
+  ion-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+  }
 
   .logo {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-family: 'Impact', 'Arial Black', sans-serif;
     color: #b30000;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    flex: 1;
   }
 
-  .profile-avatar img {
-    width: 40px;
-    height: 40px;
-    border: 2px solid #b30000;
+  .header-buttons {
+    display: flex;
+    align-items: center;
+  }
+
+  .avatar-container {
+    position: relative;
+    width: 45px;
+    height: 45px;
+  }
+
+  .profile-btn {
+    padding: 0;
+    margin: 0;
+  }
+
+  .profile-avatar {
+    width: 35px !important;
+    height: 35px !important;
     border-radius: 50%;
-    margin-top: 15px;
+    object-fit: cover;
+  }
+
+  .notification-button {
+    position: absolute;
+    bottom: -9px;
+    left: -9px;
+    width: 32px;
+    height: 32px;
+    min-width: auto;
+    padding: 0;
+    background: transparent;
+    border-radius: 50%;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon {
+      font-size: 27px; /* ← tamaño correcto y grande */
+      color: #b30000;
+    }
+
+    &:active {
+      background-color: rgba(179, 0, 0, 0.1); /* feedback visual */
+    }
   }
 }
 
-ion-content {
-  --background: #6b0000 !important;
-  padding: 0 12px;
-  padding-bottom: 80px !important;
-}
-
-.chat-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 16px 0;
-}
-
-.message {
-  display: flex;
-  align-items: flex-start;
-  max-width: 75%;
-  padding: 10px 14px;
-  border-radius: 18px;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  color: white;
-  background-color: #8b0000;
-  word-wrap: break-word;
-
-  &.left {
-    align-self: flex-start;
-    background-color: #8b0000;
-    border-top-left-radius: 0;
-  }
-
-  &.right {
-    align-self: flex-end;
-    background-color: #b30000;
-    border-top-right-radius: 0;
-  }
-
-  ion-avatar {
-    width: 32px;  /* Tamaño más pequeño */
-    height: 32px; /* Tamaño más pequeño */
-    margin-right: 8px;  /* Espacio entre la foto y el mensaje */
-  }
-
-  span {
-    max-width: 80%; /* Limita el texto para no sobrepasar el avatar */
-    word-wrap: break-word;
-  }
-}
 
 .custom-footer,
 ion-footer {
@@ -102,20 +108,3 @@ ion-footer {
   }
 }
 
-.notification-button {
-  position: absolute;
-  right: 40px;   // mueve hacia la derecha del avatar
-  bottom: -5px;  // mueve hacia abajo del avatar
-  z-index: 2;
-  width: 48px;
-  height: 36px;
-  border-radius: 50%;
-  padding: 6px;
-  background-color: transparent;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-
-  ion-icon {
-    font-size: 60px;
-    color: #b30000;
-  }
-}
