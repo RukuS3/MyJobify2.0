@@ -1,19 +1,26 @@
-<!-- Barra superior -->
-<ion-header class="custom-header">
+<ion-header slot="fixed" class="custom-header">
   <ion-toolbar>
-    <ion-title class="logo">MYJOBIFY</ion-title>
+<ion-title class="logo" slot="start">MYJOBIFY</ion-title>
     <ion-buttons slot="end">
       <div class="avatar-container">
-        <!-- Avatar con enlace -->
-        <ion-button fill="clear" [routerLink]="'/informacion'" class="profile-btn">
+        
+          <!-- Boton notificación -->
+        <ion-button class="notification-button" color="danger" fill="clear">
+          <ion-icon name="notifications-outline"></ion-icon>
+        </ion-button>
+
+          <!-- Boton perfil -->
+        <ion-button fill="clear" [routerLink]="'/miperfil'" class="profile-btn">
           <ion-avatar class="profile-avatar">
-            <img src="https://icon-library.com/images/info-icon-png-transparent/info-icon-png-transparent-6.jpg" alt="Perfil" />
+            <img src="https://e7.pngegg.com/pngimages/789/888/png-clipart-computer-icons-login-person-user-avatar-log-smiley-desktop-wallpaper.png" alt="Perfil">
           </ion-avatar>
         </ion-button>
       </div>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
+
 <br>
 
 <ion-content class="ion-padding">
@@ -31,18 +38,6 @@
     </div>
   </div>
 
-  <!-- Div separado para estrellas -->
-  <div class="stars-container ion-text-center" style="margin-bottom: 30px;">
-    <ion-icon
-      *ngFor="let star of [1,2,3,4,5]"
-      [name]="
-        (valoracion >= star) ? 'star' :
-        (valoracion >= star - 0.5) ? 'star-half-outline' :
-        'star-outline'
-      "
-      style="color: gold; font-size: 28px; margin: 0 3px;"
-    ></ion-icon>
-  </div>
 
   <ion-list lines="full">
 
@@ -110,16 +105,17 @@
 
 </ion-content>
 
-<!-- Footer -->
 <ion-footer>
   <ion-toolbar class="custom-footer">
     <ion-buttons class="footer-buttons">
+
       <ion-button fill="clear" [routerLink]="'/inicio'">
         <ion-icon name="home" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-button fill="clear" [routerLink]="'/save-publicacion'">
+      <ion-button fill="clear">
         <ion-icon name="bookmark" slot="icon-only"></ion-icon>
       </ion-button>
+
       <ion-button fill="clear" [routerLink]="'/chat-preview'">
         <ion-icon name="chatbubble" slot="icon-only"></ion-icon>
       </ion-button>
