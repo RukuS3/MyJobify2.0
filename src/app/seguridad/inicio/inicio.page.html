@@ -1,18 +1,14 @@
 <ion-header slot="fixed" class="custom-header">
   <ion-toolbar>
-<ion-title class="logo" slot="start">MYJOBIFY</ion-title>
+    <ion-title class="logo" slot="start">MYJOBIFY</ion-title>
     <ion-buttons slot="end">
       <div class="avatar-container">
-        
-          <!-- Boton notificación -->
         <ion-button class="notification-button" color="danger" fill="clear">
           <ion-icon name="notifications-outline"></ion-icon>
         </ion-button>
-
-          <!-- Boton perfil -->
         <ion-button fill="clear" [routerLink]="'/miperfil'" class="profile-btn">
           <ion-avatar class="profile-avatar">
-            <img src="https://e7.pngegg.com/pngimages/789/888/png-clipart-computer-icons-login-person-user-avatar-log-smiley-desktop-wallpaper.png" alt="Perfil">
+            <img src="https://e7.pngegg.com/pngimages/789/888/png-clipart-computer-icons-login-person-user-avatar-log-smiley-desktop-wallpaper.png" alt="Perfil" />
           </ion-avatar>
         </ion-button>
       </div>
@@ -20,51 +16,53 @@
   </ion-toolbar>
 </ion-header>
 
-
-<!-- Cuerpo de la pagina -->
 <ion-content class="inicio-content" [fullscreen]="true">
-
   <div class="inicio-container">
-    
     <!-- Buscador -->
     <div class="search-bar">
       <ion-icon name="search" class="search-icon"></ion-icon>
-      <input type="text" placeholder="Buscar por titulo o comuna" [(ngModel)]="filtroTexto" class="search-input">
+      <input type="text" placeholder="Buscar por título o comuna" [(ngModel)]="filtroTexto" class="search-input" />
     </div>
 
-  <!-- Publicaciones -->
-  <div *ngFor="let item of publicacionesFiltradas | slice:0:limite" class="card" (click)="verDetalle(item.id)">
-    <div class="card-left">
-      <h3>{{ item.titulo }}</h3>
-      <div class="rating">
-        <ion-icon name="star" color="warning"></ion-icon>
-        <h5>{{ item.rating || '4.5' }}</h5>
+    <!-- Publicaciones -->
+    <div
+      *ngFor="let item of publicacionesFiltradas | slice:0:limite"
+      class="card"
+      (click)="verDetalle(item.id)"
+    >
+      <!-- Info izquierda -->
+      <div class="card-left">
+        <h3>{{ item.titulo }}</h3>
+        <p>{{ item.comuna }}</p>
+        <ion-button fill="clear" class="heart-btn" (click)="guardarPublicacion(item); $event.stopPropagation()">
+          <ion-icon [name]="estaGuardada(item) ? 'heart' : 'heart-outline'" color="danger"></ion-icon>
+        </ion-button>
+      </div>
+
+      <!-- Imagen derecha -->
+      <div class="card-right">
+        <img [src]="item.agregarfoto" alt="Imagen" class="publicacion-img" *ngIf="item.agregarfoto" />
       </div>
     </div>
-    <div class="card-right">
-      <img [src]="item.agregarfoto" alt="imagen" *ngIf="item.agregarfoto">
-    </div>
-  </div>
-  </div>
-
 
     <!-- Scroll infinito -->
     <ion-infinite-scroll threshold="100px" (ionInfinite)="cargarMas($event)">
-      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más...">
-      </ion-infinite-scroll-content>
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Cargando más..."
+      ></ion-infinite-scroll-content>
     </ion-infinite-scroll>
-
+  </div>
 </ion-content>
-<!-- Fin del cuerpo -->
 
-    <!-- Footer de la pagina -->
+<!-- Footer -->
 <ion-footer>
   <ion-toolbar class="custom-footer">
     <ion-buttons class="footer-buttons">
       <ion-button fill="clear" [routerLink]="'/inicio'">
         <ion-icon name="home" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-button fill="clear">
+      <ion-button fill="clear" [routerLink]="'/save-publicacion'">
         <ion-icon name="bookmark" slot="icon-only"></ion-icon>
       </ion-button>
       <ion-button fill="clear" [routerLink]="'/chat-preview'">

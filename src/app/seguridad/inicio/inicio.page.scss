@@ -1,3 +1,46 @@
+// Header
+.custom-header {
+  --background: #ffffff !important;
+  box-shadow: none;
+  border-bottom: none;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-family: 'Impact', 'Arial Black', sans-serif;
+  color: #b30000;
+  margin-left: -130px;
+}
+
+.avatar-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.profile-avatar img {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #b30000;
+  border-radius: 50%;
+  margin: 5px;
+  margin-top: 15px;
+}
+
+.notification-button {
+  position: absolute;
+  right: 40px;
+  width: 40px;
+  height: 25px;
+  padding: 5px;
+
+  ion-icon {
+    font-size: 50px;
+    color: #b30000;
+  }
+}
+
+// Cuerpo
 .inicio-content {
   --background: #ffffff;
 
@@ -35,11 +78,13 @@
       padding: 12px;
       margin: 10px 0;
       border-radius: 12px;
-      box-shadow: 0 8px px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
       .card-left {
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
 
         h3 {
           margin: 0;
@@ -47,81 +92,33 @@
           font-weight: bold;
         }
 
-        .rating {
-          display: flex;
-          align-items: center;
-          margin-top: 4px;
-          //Estrella
-          ion-icon {
-            color: gold;
-            margin-right: 4px;
-          }
-          //Numero de calificacion
-          h5 {
-            font-weight: bold;
-          }
+        p {
+          margin: 4px 0;
+          font-size: 14px;
+        }
+
+        .heart-btn {
+          margin-top: 10px;
+          padding: 0;
+          height: auto;
         }
       }
 
-      .card-right img {
-        width: 80px;
-        height: 80px;
-        border-radius: 8px;
-        object-fit: cover;
+      .card-right {
+        img.publicacion-img {
+          width: 100px;
+          height: 100px;
+          object-fit: cover;
+          border-radius: 10px;
+        }
       }
     }
   }
 }
 
-.custom-header {
-  --background: #ffffff !important;
-  box-shadow: none;
-  border-bottom: none;
-  padding: -10px;
-
-  //Nombre Logo
-  .logo {
-    font-size: 1.5rem;
-    font-family: 'Impact', 'Arial Black', sans-serif;
-    color: #b30000;
-    margin-left: -130px;
-  }
-
-  .avatar-container {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .profile-avatar img {
-    width: 40px;
-    height: 40px;
-    border: 2px solid #b30000;
-    border-radius: 50%;
-    margin-top: 15px;
-    margin: 5px;
-  
-  }
-
-  .notification-button {
-    position: absolute;
-    right: 40px;
-    width: 40px;
-    height: 25px;
-    margin-left: 10;
-    padding: 5px;
-
-    //icono alerta
-    ion-icon {
-      font-size: 50px;
-      color: #b30000;
-    }
-  }
-}
-
-//Footer 
+// Footer
 .custom-footer {
-  --background: #b30000 !important;
+  --background: #8b0000 !important;
   position: fixed;
   bottom: 0;
   left: 0;

@@ -1,52 +1,81 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.page.html',
   styleUrls: ['./inicio.page.scss'],
-  standalone:false
-
+  standalone: false
 })
 export class InicioPage implements OnInit {
 
   publicaciones: any[] = [];
   filtroTexto: string = '';
   limite: number = 5;
-
-  
+  favoritosIds: string[] = [];
 
   constructor(
-    private afs: AngularFirestore, 
-    private router: Router) 
-    {}
-
-  // Esta función lo que hace es que lleva al detalle de la publicación desde el home
-  verDetalle(id: string) {
-  this.router.navigate(['/trabajos/detalle-publicacion', id]);
-  }
+    private afs: AngularFirestore,
+    private router: Router,
+    private auth: AngularFireAuth
+  ) {}
 
   ngOnInit() {
-  this.afs.collection('Publicacion', ref => ref.orderBy('fecha', 'desc'))
-    .snapshotChanges()
-    .subscribe(data => {
-      this.publicaciones = data.map(doc => {
-        const pub = doc.payload.doc.data() as any;
-        const id = doc.payload.doc.id;
-        return {
-          id, // aquí va el ID que necesitas
-          ...pub,
-          fecha: pub['fecha']?.toDate ? pub['fecha'].toDate() : pub['fecha']
-        };
+    // Cargar publicaciones ordenadas por fecha
+    this.afs.collection('Publicacion', ref => ref.orderBy('fecha', 'desc'))
+      .snapshotChanges()
+      .subscribe(data => {
+        this.publicaciones = data.map(doc => {
+          const pub = doc.payload.doc.data() as any;
+          const id = doc.payload.doc.id;
+          return {
+            id,
+            ...pub,
+            fecha: pub['fecha']?.toDate ? pub['fecha'].toDate() : pub['fecha']
+          };
+        });
       });
 
-
+    // Cargar favoritos del usuario actual
+    this.auth.currentUser.then(user => {
+      if (user) {
+        this.afs.collection(`Favoritos/${user.uid}/publicaciones`)
+          .snapshotChanges()
+          .subscribe(favs => {
+            this.favoritosIds = favs.map(f => f.payload.doc.id);
+          });
+      }
     });
-}
+  }
 
-  // Permite filtrar por titulo o comuna
+  verDetalle(id: string) {
+    this.router.navigate(['/trabajos/detalle-publicacion', id]);
+  }
+
+  async guardarPublicacion(item: any) {
+    const user = await this.auth.currentUser;
+    if (user) {
+      const favRef = this.afs
+        .collection('Favoritos')
+        .doc(user.uid)
+        .collection('publicaciones')
+        .doc(item.id);
+
+      const doc = await favRef.get().toPromise();
+      if (doc?.exists) {
+        await favRef.delete(); // Quitar de favoritos
+      } else {
+        await favRef.set(item); // Guardar como favorito
+      }
+    }
+  }
+
+  estaGuardada(pub: any): boolean {
+    return this.favoritosIds.includes(pub.id);
+  }
+
   get publicacionesFiltradas() {
     return this.publicaciones.filter(item =>
       item.titulo.toLowerCase().includes(this.filtroTexto.toLowerCase()) ||
@@ -54,7 +83,6 @@ export class InicioPage implements OnInit {
     );
   }
 
-  // Permite tener un scroll infinito en el home
   cargarMas(event: any) {
     setTimeout(() => {
       this.limite += 5;
@@ -65,5 +93,4 @@ export class InicioPage implements OnInit {
       }
     }, 500);
   }
-
 }
