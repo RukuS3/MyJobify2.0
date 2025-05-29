@@ -33,7 +33,8 @@ export class InicioPage implements OnInit {
           return {
             id,
             ...pub,
-            fecha: pub['fecha']?.toDate ? pub['fecha'].toDate() : pub['fecha']
+            fecha: pub['fecha']?.toDate ? pub['fecha'].toDate() : pub['fecha'],
+            montoPaga: Number(pub.montoPaga) || 0  // convertir a número seguro
           };
         });
       });

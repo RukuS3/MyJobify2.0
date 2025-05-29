@@ -175,3 +175,16 @@
     }
   }
 }
+
+.estado-solicitud {
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.estado-solicitud.rechazada {
+  color: red;
+}
+
+.estado-solicitud.aceptada {
+  color: green;
+}

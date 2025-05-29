@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -10,6 +10,12 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule, PERSISTENCE } from '@angular/fire/compat/auth';
 import { environment } from 'src/environments/environment.prod';
+
+// Import para locale chileno
+import { registerLocaleData } from '@angular/common';
+import localeCl from '@angular/common/locales/es-CL';
+
+registerLocaleData(localeCl);
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +29,8 @@ import { environment } from 'src/environments/environment.prod';
     IonicStorageModule.forRoot(),
   ],
   providers: [
-    { provide: PERSISTENCE, useValue: 'local' } 
+    { provide: PERSISTENCE, useValue: 'local' },
+    { provide: LOCALE_ID, useValue: 'es-CL' } 
   ],
   bootstrap: [AppComponent]
 })

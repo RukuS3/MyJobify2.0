@@ -1,18 +1,15 @@
-<ion-header slot="fixed" class="custom-header">
+<ion-header class="custom-header">
   <ion-toolbar>
-<ion-title class="logo" slot="start">MYJOBIFY</ion-title>
+    <ion-title class="logo" slot="start">MYJOBIFY</ion-title>
     <ion-buttons slot="end">
       <div class="avatar-container">
-        
-          <!-- Boton notificación -->
-        <ion-button class="notification-button" color="danger" fill="clear">
+        <ion-button class="notification-button" color="danger" fill="clear" [routerLink]="'/solicitud-empleo'">
           <ion-icon name="notifications-outline"></ion-icon>
         </ion-button>
 
-          <!-- Boton perfil -->
         <ion-button fill="clear" [routerLink]="'/miperfil'" class="profile-btn">
           <ion-avatar class="profile-avatar">
-            <img src="https://e7.pngegg.com/pngimages/789/888/png-clipart-computer-icons-login-person-user-avatar-log-smiley-desktop-wallpaper.png" alt="Perfil">
+            <img src="https://e7.pngegg.com/pngimages/789/888/png-clipart-computer-icons-login-person-user-avatar-log-smiley-desktop-wallpaper.png" alt="Perfil" />
           </ion-avatar>
         </ion-button>
       </div>
@@ -20,7 +17,7 @@
   </ion-toolbar>
 </ion-header>
 
-    <!-- Cuerpo -->
+<!-- Cuerpo -->
 <ion-content class="detalle-content"> 
   <div class="card-publicacion" *ngIf="publicacion; else cargando">
 
@@ -50,12 +47,23 @@
       </div>
     </div>
 
-    <!-- Botón de solicitud -->
-    <ion-button [disabled]="solicitudEnviada" expand="block" class="btn-solicitud"
-      [color]="solicitudEnviada ? 'medium' : 'success'">
-      Mandar solicitud de trabajo
-    </ion-button> 
+    <!-- Estado solicitud -->
+    <p *ngIf="solicitudEnviada" [ngClass]="{'rechazada': estadoSolicitud === 'rechazada', 'aceptada': estadoSolicitud === 'aceptada'}" class="estado-solicitud">
+      Estado solicitud: {{ estadoSolicitud | titlecase }}
+    </p>
 
+    <!-- Botón de solicitud -->
+    <ion-button
+      *ngIf="usuarioActualUid !== publicacion?.usuarioId"
+      [disabled]="solicitudEnviada && estadoSolicitud !== 'rechazada'"
+      expand="block"
+      class="btn-solicitud"
+      [color]="estadoSolicitud === 'rechazada' ? 'danger' : (solicitudEnviada ? 'medium' : 'success')"
+      (click)="enviarSolicitud()"
+    >
+      {{ solicitudEnviada && estadoSolicitud === 'rechazada' ? 'Reenviar solicitud' : 'Mandar solicitud de trabajo' }}
+    </ion-button>
+    
   </div>
 
   <!-- Loader mientras carga -->

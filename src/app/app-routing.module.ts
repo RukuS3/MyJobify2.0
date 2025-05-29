@@ -82,6 +82,10 @@ const routes: Routes = [
 },  {
     path: 'save-publicacion',
     loadChildren: () => import('./seguridad/save-publicacion/save-publicacion.module').then( m => m.SavePublicacionPageModule)
+  },
+  {
+    path: 'solicitud-empleo',
+    loadChildren: () => import('./seguridad/solicitud-empleo/solicitud-empleo.module').then( m => m.SolicitudEmpleoPageModule)
   }
 
 
