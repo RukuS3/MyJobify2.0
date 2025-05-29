@@ -43,18 +43,17 @@
   padding: -10px;
 }
 
-  //Nombre Logo
   .logo {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-family: 'Impact', 'Arial Black', sans-serif;
     color: #8b0000;
     margin-left: -130px;
   }
 
   .avatar-container {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    position: relative;
+    width: 45px;
+    height: 45px;
   }
 
   .profile-avatar img {
@@ -62,20 +61,25 @@
     height: 40px;
     border: 2px solid #8b0000;
     border-radius: 50%;
-    margin-top: 15px;
-    margin: 5px;
-  
+    object-fit: cover;
   }
 
   .notification-button {
     position: absolute;
-    right: 40px;
-    width: 40px;
-    height: 25px;
-    margin-left: 10;
-    padding: 5px;
+    bottom: -9px;
+    left: -9px;
+    width: 32px;
+    height: 32px;
+    min-width: auto;
+    padding: 0;
+    background: transparent;
+    border-radius: 50%;
+    z-index: 2;
 
-    //icono alerta
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     ion-icon {
       font-size: 50px;
       color: #8b0000;
@@ -103,6 +107,28 @@
     ion-icon {
       color: #fff;
       font-size: 1.5rem;
+    }
+  }
+}
+
+.custom-footer {
+    --background: #8b0000 !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    z-index: 10;
+    padding-top: 6px;
+  
+  .footer-buttons {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      ion-icon {
+        color: #fff;
+        font-size: 1.5rem;
     }
   }
 }
