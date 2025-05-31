@@ -11,6 +11,7 @@ export class SolicitudEmpleoPage implements OnInit {
 
   solicitudes: any[] = [];
   usuarioActualUid: string | null = null;
+  solicitudesPendientesCount: number = 0; 
 
   constructor(
     private afs: AngularFirestore,
@@ -27,15 +28,18 @@ export class SolicitudEmpleoPage implements OnInit {
           .collection('solicitudesRecibidas', ref => ref.orderBy('fechaSolicitud', 'desc'))
           .valueChanges({ idField: 'id' })
           .subscribe(data => {
-            console.log('Solicitudes recibidas:', data); 
+            console.log('Solicitudes recibidas:', data);
             this.solicitudes = data;
+
+            // 👇 contar solo solicitudes pendientes
+            this.solicitudesPendientesCount = data.filter((sol: any) => sol.estado === 'pendiente').length;
           });
       }
     } catch (error) {
       console.error('Error al obtener usuario actual:', error);
     }
   }
-  
+
   private async getUsuarioUid(): Promise<string | null> {
     const user = await this.auth.currentUser;
     return user ? user.uid : null;
@@ -49,7 +53,7 @@ export class SolicitudEmpleoPage implements OnInit {
       .update({ estado: 'aceptada' })
       .catch(err => console.error('Error al aceptar solicitud:', err));
   }
-  
+
   rechazarSolicitud(id: string) {
     if (!this.usuarioActualUid) return;
 
@@ -58,5 +62,4 @@ export class SolicitudEmpleoPage implements OnInit {
       .update({ estado: 'rechazada' })
       .catch(err => console.error('Error al rechazar solicitud:', err));
   }
-
 }

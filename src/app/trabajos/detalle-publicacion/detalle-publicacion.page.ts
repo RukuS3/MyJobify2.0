@@ -13,6 +13,7 @@ export class DetallePublicacionPage implements OnInit {
   usuarioActualUid: string | null = null;
   solicitudEnviada: boolean = false;
   estadoSolicitud: string | null = null;
+  datosCargados: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,16 +30,28 @@ export class DetallePublicacionPage implements OnInit {
       if (id) {
         this.afs.collection('Publicacion').doc(id).valueChanges().subscribe(pub => {
           this.publicacion = pub;
-          this.cargarSolicitud();
+
+          
+          if (this.publicacion) {
+            this.publicacion.id = id;
+          }
+
+          if (this.publicacion?.usuarioId) {
+            this.cargarSolicitud();
+          }
         });
       }
     });
   }
 
   cargarSolicitud() {
-    if (this.usuarioActualUid && this.publicacion?.usuarioId) {
+    if (this.usuarioActualUid && this.publicacion?.usuarioId && this.publicacion.id) {
       this.afs.collection('Solicitudes').doc(this.publicacion.usuarioId)
-        .collection('solicitudesRecibidas', ref => ref.where('solicitanteUid', '==', this.usuarioActualUid))
+        .collection('solicitudesRecibidas', ref => 
+          ref
+            .where('solicitanteUid', '==', this.usuarioActualUid)
+            .where('publicacionId', '==', this.publicacion.id)  // filtro por publicación
+        )
         .valueChanges({ idField: 'id' })
         .subscribe(solicitudes => {
           if (solicitudes.length > 0) {
@@ -48,7 +61,13 @@ export class DetallePublicacionPage implements OnInit {
             this.solicitudEnviada = false;
             this.estadoSolicitud = null;
           }
+          this.datosCargados = true;
+        }, error => {
+          console.error('Error al cargar solicitud:', error);
+          this.datosCargados = true;
         });
+    } else {
+      this.datosCargados = true;
     }
   }
 
@@ -57,8 +76,18 @@ export class DetallePublicacionPage implements OnInit {
 
     if (this.usuarioActualUid === this.publicacion.usuarioId) return;
 
+    if (this.solicitudEnviada && this.estadoSolicitud === 'rechazada') {
+      console.warn('Solicitud fue rechazada anteriormente. No se puede volver a enviar.');
+      return;
+    }
+
+    if (this.solicitudEnviada) {
+      console.warn('Ya hay una solicitud enviada.');
+      return;
+    }
+
     const solicitud = {
-      publicacionId: this.route.snapshot.paramMap.get('id'),
+      publicacionId: this.publicacion.id,  
       solicitanteUid: this.usuarioActualUid,
       fechaSolicitud: new Date(),
       estado: 'pendiente',
@@ -69,8 +98,9 @@ export class DetallePublicacionPage implements OnInit {
         .doc(this.publicacion.usuarioId)
         .collection('solicitudesRecibidas')
         .add(solicitud);
+
       this.solicitudEnviada = true;
-      this.cargarSolicitud(); 
+      this.estadoSolicitud = 'pendiente';
     } catch (error) {
       console.error('Error al enviar solicitud:', error);
     }

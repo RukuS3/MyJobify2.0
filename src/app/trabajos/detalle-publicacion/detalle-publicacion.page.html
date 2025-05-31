@@ -47,22 +47,52 @@
       </div>
     </div>
 
-    <!-- Estado solicitud -->
-    <p *ngIf="solicitudEnviada" [ngClass]="{'rechazada': estadoSolicitud === 'rechazada', 'aceptada': estadoSolicitud === 'aceptada'}" class="estado-solicitud">
-      Estado solicitud: {{ estadoSolicitud | titlecase }}
-    </p>
 
-    <!-- Botón de solicitud -->
-    <ion-button
-      *ngIf="usuarioActualUid !== publicacion?.usuarioId"
-      [disabled]="solicitudEnviada && estadoSolicitud !== 'rechazada'"
-      expand="block"
-      class="btn-solicitud"
-      [color]="estadoSolicitud === 'rechazada' ? 'danger' : (solicitudEnviada ? 'medium' : 'success')"
-      (click)="enviarSolicitud()"
-    >
-      {{ solicitudEnviada && estadoSolicitud === 'rechazada' ? 'Reenviar solicitud' : 'Mandar solicitud de trabajo' }}
-    </ion-button>
+      <!-- Botón de solicitud -->
+      <ng-container *ngIf="datosCargados && usuarioActualUid !== publicacion?.usuarioId">
+
+        <!-- Botón para enviar solicitud si NO ha enviado -->
+        <ion-button
+          *ngIf="!solicitudEnviada"
+          expand="block"
+          class="btn-solicitud"
+          color="success"
+          (click)="enviarSolicitud()"
+        >
+          Mandar solicitud de trabajo
+        </ion-button>
+
+        <!-- Mensaje si fue RECHAZADA -->
+        <p *ngIf="solicitudEnviada && estadoSolicitud === 'rechazada'" class="info-solicitud info-rechazada">
+          La solicitud que enviaste fue <strong>Rechazada</strong>
+        </p>
+
+        <!-- Botón para estados pendiente o aceptada -->
+        <ion-button
+          *ngIf="solicitudEnviada && (estadoSolicitud === 'pendiente' || estadoSolicitud === 'aceptada')"
+          expand="block"
+          [ngClass]="{
+            'btn-pendiente': estadoSolicitud === 'pendiente',
+            'btn-aceptada': estadoSolicitud === 'aceptada'
+          }"
+          color="medium"
+          disabled
+        >
+          Solicitud {{ estadoSolicitud === 'pendiente' ? 'pendiente' : 'aceptada' }}
+        </ion-button>
+
+      </ng-container>
+
+      <!-- Texto informativo para estados aceptados o pendientes -->
+      <p *ngIf="solicitudEnviada && estadoSolicitud !== 'rechazada'" class="info-solicitud" 
+        [ngClass]="{
+          'info-aceptada': estadoSolicitud === 'aceptada',
+          'info-pendiente': estadoSolicitud === 'pendiente'
+        }">
+        Ya enviaste una solicitud. Estado: <strong>{{ estadoSolicitud | titlecase }}</strong>
+      </p>
+
+
     
   </div>
 

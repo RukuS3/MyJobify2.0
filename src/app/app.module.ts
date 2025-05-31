@@ -6,31 +6,34 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
-// ========firebase===========
+// ======== Firebase ===========
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule, PERSISTENCE } from '@angular/fire/compat/auth';
 import { environment } from 'src/environments/environment.prod';
 
-// Import para locale chileno
+// ======== Locale Chile ===========
 import { registerLocaleData } from '@angular/common';
 import localeCl from '@angular/common/locales/es-CL';
 
 registerLocaleData(localeCl);
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent
+    
+  ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig), 
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     FormsModule,
     AngularFireAuthModule,
     IonicStorageModule.forRoot(),
   ],
   providers: [
     { provide: PERSISTENCE, useValue: 'local' },
-    { provide: LOCALE_ID, useValue: 'es-CL' } 
+    { provide: LOCALE_ID, useValue: 'es-CL' }
   ],
   bootstrap: [AppComponent]
 })

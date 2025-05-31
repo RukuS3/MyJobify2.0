@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { CrearPublicacionPageRoutingModule } from './crear-publicacion-routing.module';
 import { CrearPublicacionPage } from './crear-publicacion.page';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import { CrearPublicacionPage } from './crear-publicacion.page';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    CrearPublicacionPageRoutingModule
+    CrearPublicacionPageRoutingModule,
+    SharedModule 
   ],
   declarations: [CrearPublicacionPage]
 })

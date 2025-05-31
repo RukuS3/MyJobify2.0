@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-
+import { SharedModule } from '../../shared/shared.module';
 import { SavePublicacionPageRoutingModule } from './save-publicacion-routing.module';
 
 import { SavePublicacionPage } from './save-publicacion.page';
@@ -13,7 +13,8 @@ import { SavePublicacionPage } from './save-publicacion.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    SavePublicacionPageRoutingModule
+    SavePublicacionPageRoutingModule,
+    SharedModule 
   ],
   declarations: [SavePublicacionPage]
 })

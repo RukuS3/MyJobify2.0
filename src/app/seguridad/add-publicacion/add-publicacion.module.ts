@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
 import { IonicModule } from '@ionic/angular';
-
+import { SharedModule } from '../../shared/shared.module';
 import { AddPublicacionPageRoutingModule } from './add-publicacion-routing.module';
 import { AddPublicacionPage } from './add-publicacion.page';
 
@@ -12,7 +12,8 @@ import { AddPublicacionPage } from './add-publicacion.page';
     FormsModule,
     ReactiveFormsModule, 
     IonicModule,
-    AddPublicacionPageRoutingModule
+    AddPublicacionPageRoutingModule,
+    SharedModule
   ],
   declarations: [AddPublicacionPage]
 })

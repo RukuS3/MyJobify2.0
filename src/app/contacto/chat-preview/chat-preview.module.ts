@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { ChatPreviewPageRoutingModule } from './chat-preview-routing.module';
-
+import { SharedModule } from '../../shared/shared.module';
 import { ChatPreviewPage } from './chat-preview.page';
 
 @NgModule({
@@ -13,7 +13,8 @@ import { ChatPreviewPage } from './chat-preview.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    ChatPreviewPageRoutingModule
+    ChatPreviewPageRoutingModule,
+    SharedModule
   ],
   declarations: [ChatPreviewPage]
 })

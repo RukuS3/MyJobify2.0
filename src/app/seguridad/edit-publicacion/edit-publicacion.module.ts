@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // <- Aquí agregas ReactiveFormsModule
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
 import { IonicModule } from '@ionic/angular';
-
+import { SharedModule } from '../../shared/shared.module';
 import { EditPublicacionPageRoutingModule } from './edit-publicacion-routing.module';
 import { EditPublicacionPage } from './edit-publicacion.page';
 
@@ -10,9 +10,10 @@ import { EditPublicacionPage } from './edit-publicacion.page';
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule, // <- Asegúrate de incluir esto
+    ReactiveFormsModule, 
     IonicModule,
-    EditPublicacionPageRoutingModule
+    EditPublicacionPageRoutingModule,
+    SharedModule
   ],
   declarations: [EditPublicacionPage]
 })

@@ -218,3 +218,25 @@ ion-button.login-button.centrado {
   max-height: 200px;
   object-fit: cover;
 }
+
+.mensaje-vacio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  color: #8b0000; // gris elegante
+  padding: 30px 20px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  margin: 20px;
+
+  .icono-info {
+    font-size: 2.5rem;
+    color: #a50202;
+    margin-bottom: 10px;
+  }
+}
