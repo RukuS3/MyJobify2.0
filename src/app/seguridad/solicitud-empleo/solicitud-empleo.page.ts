@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-solicitud-empleo',
@@ -15,7 +16,8 @@ export class SolicitudEmpleoPage implements OnInit {
 
   constructor(
     private afs: AngularFirestore,
-    private auth: AngularFireAuth
+    private auth: AngularFireAuth,
+    private alertController: AlertController
   ) { }
 
   async ngOnInit() {
@@ -26,13 +28,17 @@ export class SolicitudEmpleoPage implements OnInit {
       if (this.usuarioActualUid) {
         this.afs.collection('Solicitudes').doc(this.usuarioActualUid)
           .collection('solicitudesRecibidas', ref => ref.orderBy('fechaSolicitud', 'desc'))
-          .valueChanges({ idField: 'id' })
-          .subscribe(data => {
-            console.log('Solicitudes recibidas:', data);
-            this.solicitudes = data;
+          .snapshotChanges()
+          .subscribe(snaps => {
+            this.solicitudes = snaps.map(snap => {
+              const data = snap.payload.doc.data();
+              const id = snap.payload.doc.id;
+              return { id, ...data };
+            });
 
-            // 👇 contar solo solicitudes pendientes
-            this.solicitudesPendientesCount = data.filter((sol: any) => sol.estado === 'pendiente').length;
+            console.log('Solicitudes recibidas con ID:', this.solicitudes);
+
+            this.solicitudesPendientesCount = this.solicitudes.filter(sol => sol.estado === 'pendiente').length;
           });
       }
     } catch (error) {
@@ -53,6 +59,31 @@ export class SolicitudEmpleoPage implements OnInit {
       .update({ estado: 'aceptada' })
       .catch(err => console.error('Error al aceptar solicitud:', err));
   }
+
+  async confirmarRechazo(id: string) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar rechazo',
+      message: '¿Estás seguro de que quieres rechazar esta solicitud?',
+      cssClass: 'custom-alert',  // 👈 muy importante
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'alert-button-cancel'
+        },
+        {
+          text: 'Rechazar',
+          handler: () => {
+            this.rechazarSolicitud(id);
+          },
+          cssClass: 'alert-button-confirm'
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
 
   rechazarSolicitud(id: string) {
     if (!this.usuarioActualUid) return;

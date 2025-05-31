@@ -1,47 +1,36 @@
-<ion-header class="custom-header">
-  <ion-toolbar>
-    <ion-title class="logo" slot="start">MYJOBIFY</ion-title>
-    <ion-buttons slot="end">
-      <div class="avatar-container" style="position: relative;">
-        <!-- Botón de notificaciones con badge -->
-        <ion-button class="notification-button" color="danger" fill="clear" [routerLink]="'/solicitud-empleo'">
-          <ion-icon name="notifications-outline"></ion-icon>
-          <span *ngIf="solicitudesPendientesCount > 0" class="badge-notificacion">
-            {{ solicitudesPendientesCount }}
-          </span>
-        </ion-button>
-
-
-        <!-- Botón de perfil -->
-        <ion-button fill="clear" [routerLink]="'/miperfil'" class="profile-btn">
-          <ion-avatar class="profile-avatar">
-            <img src="https://e7.pngegg.com/pngimages/789/888/png-clipart-computer-icons-login-person-user-avatar-log-smiley-desktop-wallpaper.png" alt="Perfil" />
-          </ion-avatar>
-        </ion-button>
-      </div>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-header></app-header>
 
 <ion-content>
   <ion-list *ngIf="solicitudes.length > 0; else noSolicitudes">
-    <ion-item *ngFor="let sol of solicitudes">
+    <ion-item lines="full" *ngFor="let sol of solicitudes">
+
       <ion-thumbnail slot="start">
-        <img [src]="sol.publicacionFoto || 'https://via.placeholder.com/150'" alt="Foto publicación" />
+        <img [src]="sol.agregarfoto || 'https://via.placeholder.com/150'" alt="Foto publicación" />
       </ion-thumbnail>
-      <ion-label>
-        <h3><strong>Postulación de:</strong> {{ sol.solicitanteNombre }} {{ sol.solicitanteApellido }}</h3>
-        <p><strong>Estado:</strong> {{ sol.estado }}</p>
-        <p><strong>Fecha:</strong> {{ sol.fechaSolicitud?.toDate() | date:'short' }}</p>
-      </ion-label>
-      <ion-button color="success" (click)="aceptarSolicitud(sol.id)" [disabled]="sol.estado !== 'pendiente'">
-        Aceptar
-      </ion-button>
-      <ion-button color="danger" (click)="rechazarSolicitud(sol.id)" [disabled]="sol.estado !== 'pendiente'">
-        Rechazar
-      </ion-button>
+
+      <div class="ion-label-container">
+        <ion-label>
+          <h3>Postulación de: {{ sol.solicitanteNombre }} {{ sol.solicitanteApellido }}</h3>
+          <p><strong>Estado:</strong> {{ sol.estado }}</p>
+          <p><strong>Fecha:</strong> {{ sol.fechaSolicitud?.toDate() | date:'short' }}</p>
+        </ion-label>
+      </div>
+
+      <div class="solicitud-botones">
+        <ion-button class="solicitud-botones-btn btn-aceptar" (click)="aceptarSolicitud(sol.id)" [disabled]="sol.estado !== 'pendiente'">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+        </ion-button>
+        <ion-button class="solicitud-botones-btn btn-rechazar"
+                    (click)="confirmarRechazo(sol.id)"
+                    [disabled]="sol.estado !== 'pendiente'">
+          <ion-icon name="close-circle-outline"></ion-icon>
+        </ion-button>
+      </div>
+
     </ion-item>
   </ion-list>
+
+
 
   <ng-template #noSolicitudes>
     <ion-text color="medium" class="ion-padding">

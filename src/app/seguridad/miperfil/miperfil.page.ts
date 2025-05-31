@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-miperfil',
@@ -7,26 +9,50 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
   styleUrls: ['./miperfil.page.scss'],
 })
 export class MiperfilPage implements OnInit {
-  telefono: string = '+56 987654321';
-  correo: string = 'correo@ejemplo.com';
-  direccion: string = 'Av. Siempre Viva 742';
-
-  modoEdicion: boolean = false;
-
-  editandoTelefono: boolean = false;
-  editandoCorreo: boolean = false;
-  editandoDireccion: boolean = false;
-
-  valoracion: number = 3.5; 
-
-
-
-  // Imagen de perfil por defecto
+  telefono: string = '';
+  correo: string = '';
+  direccion: string = '';
+  nombre: string = '';
+  apellido: string = '';
+  rut: string = '';
   fotoPerfil: string = 'https://placehold.co/150x150';
 
-  constructor() {}
+  editandoTelefono = false;
+  editandoCorreo = false;
+  editandoDireccion = false;
 
-  ngOnInit() {}
+  uid: string = '';
+
+  constructor(
+    private afAuth: AngularFireAuth,
+    private afs: AngularFirestore
+  ) {}
+
+  ngOnInit() {
+    this.cargarDatosUsuario();
+  }
+
+  async cargarDatosUsuario() {
+    const user = await this.afAuth.currentUser;
+    if (!user) {
+      console.error('Usuario no autenticado');
+      return;
+    }
+
+    this.uid = user.uid;
+
+    this.afs.collection('usuarios').doc(this.uid).valueChanges().subscribe((data: any) => {
+      if (data) {
+        this.telefono = data.telefono || '';
+        this.correo = data.email || user.email || '';
+        this.direccion = data.direccion || '';
+        this.nombre = data.nombre || '';
+        this.apellido = data.apellido || '';
+        this.rut = data.rut || '';
+        this.fotoPerfil = data.fotoUrl || this.fotoPerfil;
+      }
+    });
+  }
 
   async cambiarFotoPerfil() {
     try {
@@ -34,7 +60,7 @@ export class MiperfilPage implements OnInit {
         quality: 90,
         allowEditing: false,
         resultType: CameraResultType.DataUrl,
-        source: CameraSource.Photos // Abre la galería
+        source: CameraSource.Photos,
       });
 
       this.fotoPerfil = image.dataUrl;
@@ -43,14 +69,27 @@ export class MiperfilPage implements OnInit {
     }
   }
 
-guardarCambios() {
-  console.log('Teléfono:', this.telefono);
-  console.log('Correo:', this.correo);
-  console.log('Dirección:', this.direccion);
+  guardarCambios() {
+    if (!this.uid) {
+      console.error('UID no disponible para guardar cambios');
+      return;
+    }
 
-
-  this.editandoTelefono = false;
-  this.editandoCorreo = false;
-  this.editandoDireccion = false;
-}
+    this.afs.collection('usuarios').doc(this.uid).update({
+      telefono: this.telefono,
+      email: this.correo,
+      direccion: this.direccion,
+      fotoUrl: this.fotoPerfil,
+      nombre: this.nombre,
+      apellido: this.apellido,
+      rut: this.rut,
+    }).then(() => {
+      console.log('Datos actualizados correctamente');
+      this.editandoTelefono = false;
+      this.editandoCorreo = false;
+      this.editandoDireccion = false;
+    }).catch(err => {
+      console.error('Error al actualizar datos:', err);
+    });
+  }
 }

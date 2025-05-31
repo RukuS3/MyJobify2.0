@@ -129,3 +129,19 @@ ion-button {
         --height: 680px;
     }
 }
+
+.alert-button-confirm {
+  --background: #dc3545 !important; /* rojo fuerte */
+  --color: #fff !important;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+.alert-button-cancel {
+  --background: #6c757d !important; /* gris oscuro */
+  --color: #fff !important;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 8px 16px;
+}

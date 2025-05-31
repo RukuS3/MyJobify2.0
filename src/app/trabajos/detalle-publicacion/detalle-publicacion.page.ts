@@ -31,7 +31,6 @@ export class DetallePublicacionPage implements OnInit {
         this.afs.collection('Publicacion').doc(id).valueChanges().subscribe(pub => {
           this.publicacion = pub;
 
-          
           if (this.publicacion) {
             this.publicacion.id = id;
           }
@@ -50,7 +49,7 @@ export class DetallePublicacionPage implements OnInit {
         .collection('solicitudesRecibidas', ref => 
           ref
             .where('solicitanteUid', '==', this.usuarioActualUid)
-            .where('publicacionId', '==', this.publicacion.id)  // filtro por publicación
+            .where('publicacionId', '==', this.publicacion.id)
         )
         .valueChanges({ idField: 'id' })
         .subscribe(solicitudes => {
@@ -73,7 +72,6 @@ export class DetallePublicacionPage implements OnInit {
 
   async enviarSolicitud() {
     if (!this.usuarioActualUid || !this.publicacion) return;
-
     if (this.usuarioActualUid === this.publicacion.usuarioId) return;
 
     if (this.solicitudEnviada && this.estadoSolicitud === 'rechazada') {
@@ -86,14 +84,33 @@ export class DetallePublicacionPage implements OnInit {
       return;
     }
 
-    const solicitud = {
-      publicacionId: this.publicacion.id,  
-      solicitanteUid: this.usuarioActualUid,
-      fechaSolicitud: new Date(),
-      estado: 'pendiente',
-    };
-
     try {
+      //  1. Obtener los datos del usuario solicitante y tiparlos
+      const usuarioDoc = await this.afs.collection('usuarios').doc(this.usuarioActualUid).get().toPromise();
+      const usuarioData = usuarioDoc?.data() as {
+        nombre: string;
+        apellido: string;
+        fotoUrl: string;
+      };
+
+      if (!usuarioData) {
+        console.error('No se encontraron datos del usuario solicitante');
+        return;
+      }
+
+      // 2. Construir solicitud incluyendo los datos del usuario
+      const solicitud = {
+        publicacionId: this.publicacion.id,
+        solicitanteUid: this.usuarioActualUid,
+        fechaSolicitud: new Date(),
+        estado: 'pendiente',
+        solicitanteNombre: usuarioData.nombre || '',
+        solicitanteApellido: usuarioData.apellido || '',
+        solicitanteFoto: usuarioData.fotoUrl || '',
+        agregarfoto: this.publicacion.agregarfoto || ''
+      };
+
+      // 3. Guardar la solicitud
       await this.afs.collection('Solicitudes')
         .doc(this.publicacion.usuarioId)
         .collection('solicitudesRecibidas')
@@ -101,6 +118,7 @@ export class DetallePublicacionPage implements OnInit {
 
       this.solicitudEnviada = true;
       this.estadoSolicitud = 'pendiente';
+
     } catch (error) {
       console.error('Error al enviar solicitud:', error);
     }

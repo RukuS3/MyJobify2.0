@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { DetallePublicacionPageRoutingModule } from './detalle-publicacion-routing.module';
-
+import { SharedModule } from '../../shared/shared.module';
 import { DetallePublicacionPage } from './detalle-publicacion.page';
 
 @NgModule({
@@ -13,7 +13,8 @@ import { DetallePublicacionPage } from './detalle-publicacion.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    DetallePublicacionPageRoutingModule
+    DetallePublicacionPageRoutingModule,
+    SharedModule 
   ],
   declarations: [DetallePublicacionPage]
 })
