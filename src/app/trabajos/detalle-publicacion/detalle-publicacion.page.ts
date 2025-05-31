@@ -70,7 +70,7 @@ export class DetallePublicacionPage implements OnInit {
         .collection('solicitudesRecibidas')
         .add(solicitud);
       this.solicitudEnviada = true;
-      this.cargarSolicitud(); // Actualiza estado después de enviar
+      this.cargarSolicitud(); 
     } catch (error) {
       console.error('Error al enviar solicitud:', error);
     }
