@@ -13,7 +13,11 @@ export class AuthService {
     private firestore: AngularFirestore) {}
 
   login(email: string, password: string) {
-    return this.afAuth.signInWithEmailAndPassword(email, password);
+    return this.afAuth.signInWithEmailAndPassword(email, password)
+      .then((cred) => {
+        localStorage.setItem('user', JSON.stringify(cred.user));
+        return cred;
+      });
   }
 
   register(email: string, password: string, rut: string, nombre: string, apellido: string, telefono: string) {
@@ -27,7 +31,7 @@ export class AuthService {
         nombre: nombre,
         apellido: apellido,
         telefono: telefono,
-        fotoUrl: '', // opcional, inicial vacío
+        fotoUrl: '', 
         fechaCreacion: new Date()
       });
     })
@@ -43,8 +47,10 @@ export class AuthService {
   }
 
   logout() {
+    localStorage.removeItem('user');
     return this.afAuth.signOut();
   }
+
   getUsuarioActual() {
     return this.afAuth.authState
       .pipe(
@@ -57,6 +63,10 @@ export class AuthService {
           }
         })
       );
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.afAuth['auth'].currentUser;
   }
 
 }

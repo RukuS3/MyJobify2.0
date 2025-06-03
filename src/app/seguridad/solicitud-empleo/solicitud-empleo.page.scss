@@ -134,7 +134,7 @@ ion-text {
 
 // Footer
 .custom-footer {
-  --background: #b30000 !important;
+  --background: #8b0000 !important;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -142,18 +142,12 @@ ion-text {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   z-index: 10;
-  padding: 8px 0;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+  padding: 6px 0;
 
   .footer-buttons {
     display: flex;
     justify-content: space-around;
-    align-items: center;
-
-    ion-button {
-      --padding-start: 8px;
-      --padding-end: 8px;
-    }
+    width: 100%;
 
     ion-icon {
       color: #fff;

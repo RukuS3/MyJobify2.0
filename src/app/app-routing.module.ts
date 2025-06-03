@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -7,89 +8,98 @@ const routes: Routes = [
     redirectTo: 'auth',  
     pathMatch: 'full',
   },
-  
   {
     path: 'auth',
     loadChildren: () => import('./seguridad/auth/auth.module').then(m => m.AuthPageModule),
   },
   {
     path: 'inicio',
-    loadChildren: () => import('./seguridad/inicio/inicio.module').then( m => m.InicioPageModule)
+    loadChildren: () => import('./seguridad/inicio/inicio.module').then(m => m.InicioPageModule),
+    canActivate: [AuthGuard] // 👈 protegida
   },
   {
     path: 'registro',
-    loadChildren: () => import('./seguridad/registro/registro.module').then( m => m.RegistroPageModule)
+    loadChildren: () => import('./seguridad/registro/registro.module').then(m => m.RegistroPageModule)
   },
   {
-  path: 'trabajos/detalle-publicacion/:id',
-  loadChildren: () => import('./trabajos/detalle-publicacion/detalle-publicacion.module').then(m => m.DetallePublicacionPageModule)
+    path: 'trabajos/detalle-publicacion/:id',
+    loadChildren: () => import('./trabajos/detalle-publicacion/detalle-publicacion.module').then(m => m.DetallePublicacionPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'detalle-publicacion',
-    loadChildren: () => import('./trabajos/detalle-publicacion/detalle-publicacion.module').then( m => m.DetallePublicacionPageModule)
+    loadChildren: () => import('./trabajos/detalle-publicacion/detalle-publicacion.module').then(m => m.DetallePublicacionPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'chat-preview',
-    loadChildren: () => import('./contacto/chat-preview/chat-preview.module').then( m => m.ChatPreviewPageModule)
+    loadChildren: () => import('./contacto/chat-preview/chat-preview.module').then(m => m.ChatPreviewPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'chat-open',
-    loadChildren: () => import('./contacto/chat-open/chat-open.module').then( m => m.ChatOpenPageModule)
+    loadChildren: () => import('./contacto/chat-open/chat-open.module').then(m => m.ChatOpenPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'miperfil',
-    loadChildren: () => import('./seguridad/miperfil/miperfil.module').then( m => m.MiperfilPageModule)
+    loadChildren: () => import('./seguridad/miperfil/miperfil.module').then(m => m.MiperfilPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'informacion',
-    loadChildren: () => import('./seguridad/informacion/informacion.module').then( m => m.InformacionPageModule)
+    loadChildren: () => import('./seguridad/informacion/informacion.module').then(m => m.InformacionPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'crear-publicacion',
-    loadChildren: () => import('./seguridad/crear-publicacion/crear-publicacion.module').then( m => m.CrearPublicacionPageModule)
+    loadChildren: () => import('./seguridad/crear-publicacion/crear-publicacion.module').then(m => m.CrearPublicacionPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'add-publicacion',
-    loadChildren: () => import('./seguridad/add-publicacion/add-publicacion.module').then( m => m.AddPublicacionPageModule)
+    loadChildren: () => import('./seguridad/add-publicacion/add-publicacion.module').then(m => m.AddPublicacionPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'contactanos',
-    loadChildren: () => import('./contacto/contactanos/contactanos.module').then( m => m.ContactanosPageModule)
+    loadChildren: () => import('./contacto/contactanos/contactanos.module').then(m => m.ContactanosPageModule)
   },
   {
     path: 'terminos-condiciones',
-    loadChildren: () => import('./contacto/terminos-condiciones/terminos-condiciones.module').then( m => m.TerminosCondicionesPageModule)
+    loadChildren: () => import('./contacto/terminos-condiciones/terminos-condiciones.module').then(m => m.TerminosCondicionesPageModule)
   },
   {
     path: 'privacidad-terminos',
-    loadChildren: () => import('./contacto/privacidad-terminos/privacidad-terminos.module').then( m => m.PrivacidadTerminosPageModule)
+    loadChildren: () => import('./contacto/privacidad-terminos/privacidad-terminos.module').then(m => m.PrivacidadTerminosPageModule)
   },
   {
     path: 'quienes-somos',
-    loadChildren: () => import('./contacto/quienes-somos/quienes-somos.module').then( m => m.QuienesSomosPageModule)
+    loadChildren: () => import('./contacto/quienes-somos/quienes-somos.module').then(m => m.QuienesSomosPageModule)
   },
   {
     path: 'edit-publicacion/:id',
-    loadChildren: () => import('./seguridad/edit-publicacion/edit-publicacion.module').then( m => m.EditPublicacionPageModule)
+    loadChildren: () => import('./seguridad/edit-publicacion/edit-publicacion.module').then(m => m.EditPublicacionPageModule),
+    canActivate: [AuthGuard]
   },
   {
-  path: 'register',
-  loadChildren: () => import('./seguridad/auth/register/register.module').then(m => m.RegisterPageModule)
-},
-{
-  path: 'forgot-password',
-  loadChildren: () => import('./seguridad/auth/forgot-password/forgot-password.module').then(m => m.ForgotPasswordPageModule)
-},  {
+    path: 'register',
+    loadChildren: () => import('./seguridad/auth/register/register.module').then(m => m.RegisterPageModule)
+  },
+  {
+    path: 'forgot-password',
+    loadChildren: () => import('./seguridad/auth/forgot-password/forgot-password.module').then(m => m.ForgotPasswordPageModule)
+  },
+  {
     path: 'save-publicacion',
-    loadChildren: () => import('./seguridad/save-publicacion/save-publicacion.module').then( m => m.SavePublicacionPageModule)
+    loadChildren: () => import('./seguridad/save-publicacion/save-publicacion.module').then(m => m.SavePublicacionPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'solicitud-empleo',
-    loadChildren: () => import('./seguridad/solicitud-empleo/solicitud-empleo.module').then( m => m.SolicitudEmpleoPageModule)
+    loadChildren: () => import('./seguridad/solicitud-empleo/solicitud-empleo.module').then(m => m.SolicitudEmpleoPageModule),
+    canActivate: [AuthGuard]
   }
-
-
-
 ];
 
 @NgModule({

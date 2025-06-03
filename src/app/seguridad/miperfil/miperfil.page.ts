@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AuthService } from 'src/app/services/auth.service'; 
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-miperfil',
@@ -25,7 +27,9 @@ export class MiperfilPage implements OnInit {
 
   constructor(
     private afAuth: AngularFireAuth,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -92,4 +96,11 @@ export class MiperfilPage implements OnInit {
       console.error('Error al actualizar datos:', err);
     });
   }
+
+  logout() {
+    this.authService.logout().then(() => {
+      this.router.navigate(['/auth']);
+    });
+  }
+  
 }
