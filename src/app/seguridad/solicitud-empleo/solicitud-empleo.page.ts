@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-solicitud-empleo',
@@ -15,6 +17,7 @@ export class SolicitudEmpleoPage implements OnInit {
   solicitudesPendientesCount: number = 0; 
 
   constructor(
+    private router: Router,
     private afs: AngularFirestore,
     private auth: AngularFireAuth,
     private alertController: AlertController
@@ -53,7 +56,7 @@ export class SolicitudEmpleoPage implements OnInit {
 
   aceptarSolicitud(id: string) {
     if (!this.usuarioActualUid) return;
-
+    this.router.navigate(['/chat-preview']);
     this.afs.collection('Solicitudes').doc(this.usuarioActualUid)
       .collection('solicitudesRecibidas').doc(id)
       .update({ estado: 'aceptada' })
