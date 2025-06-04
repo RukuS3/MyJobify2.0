@@ -67,7 +67,7 @@ export class SolicitudEmpleoPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Confirmar rechazo',
       message: '¿Estás seguro de que quieres rechazar esta solicitud?',
-      cssClass: 'custom-alert',  // 👈 muy importante
+      cssClass: 'custom-alert',  
       buttons: [
         {
           text: 'Cancelar',

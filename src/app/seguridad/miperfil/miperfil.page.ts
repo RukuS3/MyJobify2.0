@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { AuthService } from 'src/app/services/auth.service'; 
+import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-miperfil',
@@ -29,7 +30,8 @@ export class MiperfilPage implements OnInit {
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -97,10 +99,32 @@ export class MiperfilPage implements OnInit {
     });
   }
 
-  logout() {
-    this.authService.logout().then(() => {
-      this.router.navigate(['/auth']);
+  async logout() {
+    const alert = await this.alertController.create({
+      header: '¿Cerrar sesión?',
+      message: '¿Estás seguro de que deseas cerrar sesión?',
+      cssClass: 'custom-alert',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'alert-button-cancel'
+        },
+        {
+          text: 'Cerrar sesión',
+          handler: () => {
+            this.authService.logout().then(() => {
+              this.router.navigate(['/auth']);
+            }).catch(err => {
+              console.error('Error al cerrar sesión:', err);
+            });
+          },
+          cssClass: 'alert-button-confirm'
+        }
+      ]
     });
+
+    await alert.present();
   }
-  
+
 }
