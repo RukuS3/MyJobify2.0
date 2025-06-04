@@ -229,3 +229,40 @@
   object-fit: cover;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
+
+::ng-deep ion-alert.custom-alert {
+  --background: #ffffff;
+  --width: 90%;
+  --max-width: 320px;
+  --border-radius: 16px;
+  --box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+  font-family: 'Arial', sans-serif;
+}
+
+::ng-deep ion-alert.custom-alert .alert-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #d9534f; // rojo para advertencia
+  text-align: center;
+}
+
+::ng-deep ion-alert.custom-alert .alert-message {
+  font-size: 15px;
+  color: #333;
+  text-align: center;
+  padding: 0 10px;
+}
+
+::ng-deep ion-alert.custom-alert .alert-button {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+::ng-deep ion-alert.custom-alert .alert-button.alert-button-cancel {
+  color: #6c757d; // gris
+}
+
+::ng-deep ion-alert.custom-alert .alert-button.alert-button-confirm {
+  color: #dc3545; // rojo intenso
+}
