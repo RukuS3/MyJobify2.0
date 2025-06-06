@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-detalle-publicacion',
@@ -16,10 +17,15 @@ export class DetallePublicacionPage implements OnInit {
   datosCargados: boolean = false;
 
   constructor(
+    private navCtrl: NavController,
     private route: ActivatedRoute,
     private afs: AngularFirestore,
     private auth: AngularFireAuth
   ) {}
+
+  goBack() {
+    this.navCtrl.back();
+  }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');

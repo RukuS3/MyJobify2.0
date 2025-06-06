@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ContactanosPageRoutingModule } from './contactanos-routing.module';
 
 import { ContactanosPage } from './contactanos.page';
+import { SharedModule } from '../../shared/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 
 
@@ -16,6 +17,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
     FormsModule,
     IonicModule,
     ContactanosPageRoutingModule,
+    SharedModule,
     ComponentsModule
   ],
   declarations: [ContactanosPage]

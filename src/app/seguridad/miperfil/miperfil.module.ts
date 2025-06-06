@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { MiperfilPageRoutingModule } from './miperfil-routing.module';
 
 import { MiperfilPage } from './miperfil.page';
+
+import { SharedModule } from '../../shared/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 
 
@@ -17,6 +19,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
     FormsModule,
     IonicModule,
     MiperfilPageRoutingModule,
+    SharedModule,
     ComponentsModule
   ],
   declarations: [MiperfilPage]

@@ -44,7 +44,7 @@
       <strong>Región Metropolitana</strong>
       <ion-item>
         <ion-label color="danger">Comuna</ion-label>
-        <ion-select formControlName="comuna" color="danger" interface="popover" placeholder="Selecciona una comuna">
+          <ion-select formControlName="comuna" color="danger" interface="popover" placeholder="Selecciona una comuna">
           <ion-select-option value="santiago">Santiago</ion-select-option>
           <ion-select-option value="maipu">Maipú</ion-select-option>
           <ion-select-option value="las_condes">Las Condes</ion-select-option>
@@ -79,14 +79,42 @@
         </ion-select>
       </ion-item>
     </div>
+
     <ion-text color="danger" *ngIf="publicacionForm.get('comuna')?.touched && publicacionForm.get('comuna')?.invalid">
       Selecciona una comuna.
     </ion-text>
 
+
+    <div class="categoria">
+      <ion-item>
+        <ion-label color="danger">Categoría</ion-label>
+        <ion-select formControlName="categoria" color="danger" interface="popover" placeholder="Selecciona una categoría">
+          <ion-select-option value="electricista">Electricista</ion-select-option>
+          <ion-select-option value="plomero">Plomero</ion-select-option>
+          <ion-select-option value="cerrajero">Cerrajero</ion-select-option>
+          <ion-select-option value="mecanico">Mecánico</ion-select-option>
+          <ion-select-option value="gasfiter">Gasfíter</ion-select-option>
+          <ion-select-option value="pintor">Pintor</ion-select-option>
+          <ion-select-option value="albanil">Albañil</ion-select-option>
+          <ion-select-option value="obrero">Obrero</ion-select-option>
+          <ion-select-option value="carpintero">Carpintero</ion-select-option>
+          <ion-select-option value="sastre">Sastre</ion-select-option>
+          <ion-select-option value="pasear_mascota">Pasear mascota</ion-select-option>
+          <ion-select-option value="lavar_auto">Lavar Auto</ion-select-option>
+          <ion-select-option value="jardineria">Jardinería</ion-select-option>
+          <ion-select-option value="masajista">Masajista</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+
+<ion-text color="danger" *ngIf="publicacionForm.get('categoria')?.touched && publicacionForm.get('categoria')?.invalid">
+  Selecciona una categoría.
+</ion-text>
+
     <input type="file" hidden #fileInput (change)="seleccionarImagenDesdeInput($event)" />
 
-    <ion-button expand="block" color="danger" type="submit" [disabled]="publicacionForm.invalid">
-      Publicar
-    </ion-button>
+  <ion-button expand="block" color="danger" type="submit" [disabled]="publicacionForm.invalid">
+    Publicar
+  </ion-button>
   </form>
 </ion-content>

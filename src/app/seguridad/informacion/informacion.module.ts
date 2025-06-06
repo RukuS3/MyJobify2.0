@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { InformacionPageRoutingModule } from './informacion-routing.module';
 
 import { InformacionPage } from './informacion.page';
+
+import { SharedModule } from '../../shared/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 
 
@@ -16,6 +18,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
     FormsModule,
     IonicModule,
     InformacionPageRoutingModule,
+    SharedModule,
     ComponentsModule
   ],
   declarations: [InformacionPage]

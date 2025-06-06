@@ -24,12 +24,13 @@ export class AddPublicacionPage implements OnInit {
     private firebaseService: FirebaseService,
     private router: Router,
     private afAuth: AngularFireAuth
-  ) {
+  ){
     this.publicacionForm = this.fb.group({
       titulo: ['', Validators.required],
       descripcion: ['', Validators.required],
       montoPaga: ['', [Validators.required, Validators.min(0)]],
-      comuna: ['', Validators.required],
+      comuna: ['', Validators.required], // ✅ este debe coincidir con el ion-select
+      categoria: ['', Validators.required], // ✅ solo uno
     });
   }
 
@@ -47,6 +48,7 @@ export class AddPublicacionPage implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
+      this.imagenFile = file;
       const reader = new FileReader();
       reader.onload = () => {
         this.fotoPublicacion = reader.result as string;
@@ -82,6 +84,7 @@ export class AddPublicacionPage implements OnInit {
       descripcion: form.descripcion,
       montoPaga: Number(form.montoPaga),
       comuna: form.comuna,
+      categoria: form.categoria,
       fecha: new Date(),
       usuarioId: user.uid
     };

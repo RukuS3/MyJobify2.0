@@ -39,3 +39,47 @@ ion-button {
   margin-top: 12px;
   width: 80%;
 }
+
+.header-calificacion {
+  text-align: center;
+}
+
+.header-calificacion ion-card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.ion-card-title{
+  position: center;
+}
+
+.isla-calificacion {
+  margin-top: 30px;
+  margin-right: 30px;
+  margin-top: -250px;
+  bottom: 20px;
+  left: 10px;
+  right: 10px;
+  z-index: 1000;
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.estrellas {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.estrella {
+  font-size: 24px;
+  color: #ffc107;
+  cursor: pointer;
+}
+
+.btn-centro {
+  display: block;      // Para que el botón sea un bloque
+  width: 200px;        // Puedes ajustar el ancho que quieras
+  margin: 15px auto;      // Centra horizontalmente
+}

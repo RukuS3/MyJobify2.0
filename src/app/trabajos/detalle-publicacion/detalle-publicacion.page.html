@@ -1,8 +1,14 @@
 <app-header></app-header>
 
 <!-- Cuerpo -->
-<ion-content class="detalle-content"> 
+ <ion-content class="detalle-content"> 
   <div class="card-publicacion" *ngIf="publicacion; else cargando">
+
+      <div style="position: absolute; top: 16px; left: 16px; z-index: 10;">
+        <ion-button fill="clear" size="small" (click)="goBack()">
+          <ion-icon name="arrow-back-outline" slot="icon-only" style="color: #8b0000; font-size: 24px;"></ion-icon>
+        </ion-button>
+      </div>
 
     <!-- Imagen principal -->
     <img [src]="publicacion.agregarfoto" alt="imagen" class="detalle-imagen" *ngIf="publicacion.agregarfoto" />

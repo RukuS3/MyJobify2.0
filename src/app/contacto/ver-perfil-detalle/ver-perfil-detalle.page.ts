@@ -11,7 +11,11 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 export class VerPerfilDetallePage implements OnInit {
 
   perfil: any = null;
-  puedeVerDatosPrivados = false;
+  puedeVerDatosPrivados = false; //No tocar
+
+  mostrarIsla: boolean = false;
+  calificacion: number = 0;
+  comentario: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -49,4 +53,16 @@ export class VerPerfilDetallePage implements OnInit {
     // Lógica para marcar la tarea como completada
     console.log('Tarea marcada como completada');
   }
+
+  enviarCalificacion() {
+    console.log('Calificación:', this.calificacion);
+    console.log('Comentario:', this.comentario);
+    // Aquí luego llamas al FirebaseService
+  }
+
+  eliminarPublicacion() {
+    console.log('Eliminar publicación');
+    // Aquí luego llamas a firebaseService.eliminarPublicacion(id)
+  }
 }
+

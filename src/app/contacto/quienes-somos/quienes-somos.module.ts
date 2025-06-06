@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { QuienesSomosPageRoutingModule } from './quienes-somos-routing.module';
 
 import { QuienesSomosPage } from './quienes-somos.page';
+import { SharedModule } from '../../shared/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 
 
@@ -16,6 +17,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
     FormsModule,
     IonicModule,
     QuienesSomosPageRoutingModule,
+    SharedModule,
     ComponentsModule
 
   ],

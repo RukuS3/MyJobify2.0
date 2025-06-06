@@ -15,6 +15,8 @@ export class InicioPage implements OnInit {
   filtroTexto: string = '';
   limite: number = 5;
   favoritosIds: string[] = [];
+  categoriaSeleccionada: string = 'todas';
+  
 
   constructor(
     private afs: AngularFirestore,
@@ -78,10 +80,11 @@ export class InicioPage implements OnInit {
   }
 
   get publicacionesFiltradas() {
-    return this.publicaciones.filter(item =>
-      item.titulo.toLowerCase().includes(this.filtroTexto.toLowerCase()) ||
-      item.comuna.toLowerCase().includes(this.filtroTexto.toLowerCase())
-    );
+    if (this.categoriaSeleccionada === 'todas') {
+      return this.publicaciones;
+    }
+
+    return this.publicaciones.filter(pub => pub.categoria === this.categoriaSeleccionada);
   }
 
   cargarMas(event: any) {

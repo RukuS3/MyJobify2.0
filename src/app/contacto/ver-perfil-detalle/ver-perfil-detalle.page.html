@@ -22,15 +22,40 @@
       <p *ngIf="puedeVerDatosPrivados">Correo: {{ perfil.email }}</p>
       <p *ngIf="!puedeVerDatosPrivados">Este usuario no ha compartido datos privados.</p>
 
-      <!-- Botón denunciar -->
       <ion-button expand="block" color="danger" (click)="denunciarUsuario()">
         Denunciar usuario
       </ion-button>
 
-      <!-- Botón tarea completada -->
-      <ion-button expand="block" color="success" (click)="marcarTareaCompletada()">
-        ¿Tarea completada?
+      <ion-button expand="block" color="success" (click)="mostrarIsla = true">
+        ¿Tarea terminada?
       </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Tarjeta flotante para calificación -->
+  <ion-card *ngIf="mostrarIsla" class="isla-calificacion">
+    <ion-card-header class="header-calificacion">
+      <ion-card-title>Calificar</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div class="estrellas">
+        <ion-icon
+          *ngFor="let estrella of [1, 2, 3, 4, 5]"
+          [name]="estrella <= calificacion ? 'star' : 'star-outline'"
+          (click)="calificacion = estrella"
+          class="estrella"
+        ></ion-icon>
+      </div>
+
+      <ion-item>
+        <ion-textarea [(ngModel)]="comentario" placeholder="Escribe un comentario"></ion-textarea>
+      </ion-item>
+
+      <ion-button color="success" (click)="enviarCalificacion()" class="btn-centro">
+        Enviar Calificación
+      </ion-button>
+
     </ion-card-content>
   </ion-card>
 </ion-content>

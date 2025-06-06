@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { PrivacidadTerminosPageRoutingModule } from './privacidad-terminos-routing.module';
 
 import { PrivacidadTerminosPage } from './privacidad-terminos.page';
-
+import { SharedModule } from '../../shared/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 
 
@@ -17,6 +17,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
     FormsModule,
     IonicModule,
     PrivacidadTerminosPageRoutingModule,
+    SharedModule,
     ComponentsModule
 
   ],

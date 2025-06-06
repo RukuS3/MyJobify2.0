@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { TerminosCondicionesPageRoutingModule } from './terminos-condiciones-routing.module';
 
 import { TerminosCondicionesPage } from './terminos-condiciones.page';
+
+import { SharedModule } from '../../shared/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 
 
@@ -16,6 +18,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
     FormsModule,
     IonicModule,
     TerminosCondicionesPageRoutingModule,
+    SharedModule,
     ComponentsModule
   ],
   declarations: [TerminosCondicionesPage]

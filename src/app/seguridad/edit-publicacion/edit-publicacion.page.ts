@@ -31,6 +31,7 @@ export class EditPublicacionPage implements OnInit {
       descripcion: ['', Validators.required],
       montoPaga: ['', Validators.required],
       comuna: ['', Validators.required],
+      categoria: ['', Validators.required],
       agregarfoto: [''],
       fecha: ['']
     });
