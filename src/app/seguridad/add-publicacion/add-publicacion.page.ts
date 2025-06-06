@@ -29,8 +29,8 @@ export class AddPublicacionPage implements OnInit {
       titulo: ['', Validators.required],
       descripcion: ['', Validators.required],
       montoPaga: ['', [Validators.required, Validators.min(0)]],
-      comuna: ['', Validators.required], // ✅ este debe coincidir con el ion-select
-      categoria: ['', Validators.required], // ✅ solo uno
+      comuna: ['', Validators.required],
+      categoria: ['', Validators.required], 
     });
   }
 
