@@ -1,34 +1,42 @@
 <app-header></app-header>
 
 <ion-content>
-<ion-list *ngIf="solicitudes.length > 0; else noSolicitudes">
-  <ion-item *ngFor="let sol of solicitudes"  [class.clickable]="sol.estado === 'aceptada'" (click)="sol.estado === 'aceptada' ? verPerfil(sol.solicitanteUid) : null">
-    
-    <ion-thumbnail slot="start">
-      <img [src]="sol.agregarfoto || 'https://via.placeholder.com/150'" alt="Foto publicación" />
-    </ion-thumbnail>
+  <ion-list *ngIf="solicitudes.length > 0; else noSolicitudes">
+    <ion-item 
+      *ngFor="let sol of solicitudes"  
+      [class.clickable]="sol.estado === 'aceptada'" 
+      (click)="sol.estado === 'aceptada' ? verPerfil(sol.solicitanteUid) : null"
+    >
 
-    <div class="ion-label-container">
+      <ion-thumbnail slot="start">
+        <img [src]="sol.agregarfoto || 'https://via.placeholder.com/150'" alt="Foto publicación" />
+      </ion-thumbnail>
+
       <ion-label>
         <h3>Postulación de: {{ sol.solicitanteNombre }} {{ sol.solicitanteApellido }}</h3>
         <p><strong>Estado:</strong> {{ sol.estado }}</p>
         <p><strong>Fecha:</strong> {{ sol.fechaSolicitud?.toDate() | date:'short' }}</p>
       </ion-label>
-    </div>
 
-    <div class="solicitud-botones">
-      <ion-button class="solicitud-botones-btn btn-aceptar" (click)="aceptarSolicitud(sol.id, sol.solicitanteUid)" [disabled]="sol.estado !== 'pendiente'">
-        <ion-icon name="checkmark-circle-outline"></ion-icon>
-      </ion-button>
-      <ion-button 
-          (click)="aceptarSolicitud(sol.id, sol.solicitanteUid)" 
-          [disabled]="sol.estado !== 'pendiente'">
-          <ion-icon name="checkmark-circle-outline"></ion-icon>
-      </ion-button>
-    </div>
+      <!-- Botones solo si está pendiente -->
+      <ion-buttons slot="end" *ngIf="sol.estado === 'pendiente'">
+        <ion-button color="success" (click)="aceptarSolicitud(sol.id, sol.solicitanteUid)">
+          <ion-icon name="checkmark-circle-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button color="danger" (click)="confirmarRechazo(sol.id)">
+          <ion-icon name="close-circle-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
 
-  </ion-item>
-</ion-list>
+    </ion-item>
+  </ion-list>
+
+  <!-- Mensaje si no hay solicitudes -->
+  <ng-template #noSolicitudes>
+    <ion-text color="medium" class="ion-padding">
+      <p>No tienes solicitudes por ahora.</p>
+    </ion-text>
+  </ng-template>
 
 
   <ng-template #noSolicitudes>

@@ -39,4 +39,14 @@ export class VerPerfilDetallePage implements OnInit {
       console.error('Error al cargar perfil:', error);
     });
   }
+
+  denunciarUsuario() {
+    // Aquí podrías redirigir a un formulario o abrir un alert
+    console.log('Denuncia enviada (simulada)');
+  }
+
+  marcarTareaCompletada() {
+    // Lógica para marcar la tarea como completada
+    console.log('Tarea marcada como completada');
+  }
 }

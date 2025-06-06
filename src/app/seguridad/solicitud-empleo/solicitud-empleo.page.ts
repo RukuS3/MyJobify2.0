@@ -4,7 +4,6 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-solicitud-empleo',
   templateUrl: './solicitud-empleo.page.html',
@@ -23,7 +22,11 @@ export class SolicitudEmpleoPage implements OnInit {
     private alertController: AlertController
   ) { }
 
-  async ngOnInit() {
+  ngOnInit() {
+    // Opcional: puedes dejarlo vacío o hacer algo que quieras al crear el componente
+  }
+
+  async ionViewWillEnter() {
     try {
       this.usuarioActualUid = await this.getUsuarioUid();
       console.log('UID actual (creador):', this.usuarioActualUid);
@@ -32,16 +35,19 @@ export class SolicitudEmpleoPage implements OnInit {
         this.afs.collection('Solicitudes').doc(this.usuarioActualUid)
           .collection('solicitudesRecibidas', ref => ref.orderBy('fechaSolicitud', 'desc'))
           .snapshotChanges()
-          .subscribe(snaps => {
-            this.solicitudes = snaps.map(snap => {
-              const data = snap.payload.doc.data();
-              const id = snap.payload.doc.id;
-              return { id, ...data };
-            });
-
-            console.log('Solicitudes recibidas con ID:', this.solicitudes);
-
-            this.solicitudesPendientesCount = this.solicitudes.filter(sol => sol.estado === 'pendiente').length;
+          .subscribe({
+            next: snaps => {
+              this.solicitudes = snaps.map(snap => {
+                const data = snap.payload.doc.data();
+                const id = snap.payload.doc.id;
+                return { id, ...data };
+              });
+              console.log('Solicitudes recibidas con ID:', this.solicitudes);
+              this.solicitudesPendientesCount = this.solicitudes.filter(sol => sol.estado === 'pendiente').length;
+            },
+            error: err => {
+              console.error('Error cargando solicitudes:', err);
+            }
           });
       }
     } catch (error) {
@@ -54,27 +60,27 @@ export class SolicitudEmpleoPage implements OnInit {
     return user ? user.uid : null;
   }
 
-aceptarSolicitud(id: string, uidSolicitante: string) {
-  if (!this.usuarioActualUid) return;
+  aceptarSolicitud(id: string, uidSolicitante: string) {
+    if (!this.usuarioActualUid) return;
 
-  this.afs.collection('Solicitudes').doc(this.usuarioActualUid)
-    .collection('solicitudesRecibidas').doc(id)
-    .update({ estado: 'aceptada' })
-    .then(() => {
-      // Agregar al listado de aceptados
-      this.afs.collection('SolicitudesAceptadas').doc(this.usuarioActualUid)
-        .collection('usuariosAceptados').doc(uidSolicitante).set({
-          aceptado: true,
-          fecha: new Date()
+    this.afs.collection('Solicitudes').doc(this.usuarioActualUid)
+      .collection('solicitudesRecibidas').doc(id)
+      .update({ estado: 'aceptada' })
+      .then(() => {
+        // Agregar al listado de aceptados
+        this.afs.collection('SolicitudesAceptadas').doc(this.usuarioActualUid)
+          .collection('usuariosAceptados').doc(uidSolicitante).set({
+            aceptado: true,
+            fecha: new Date()
+          });
+
+        // Navegar a perfil detalle
+        this.router.navigate(['/ver-perfil-detalle'], {
+          queryParams: { uid: uidSolicitante }
         });
-
-      // Navegar a perfil detalle
-      this.router.navigate(['/ver-perfil-detalle'], {
-        queryParams: { uid: uidSolicitante }
-      });
-    })
-    .catch(err => console.error('Error al aceptar solicitud:', err));
-}
+      })
+      .catch(err => console.error('Error al aceptar solicitud:', err));
+  }
 
   async confirmarRechazo(id: string) {
     const alert = await this.alertController.create({
@@ -100,7 +106,6 @@ aceptarSolicitud(id: string, uidSolicitante: string) {
     await alert.present();
   }
 
-
   rechazarSolicitud(id: string) {
     if (!this.usuarioActualUid) return;
 
@@ -111,10 +116,9 @@ aceptarSolicitud(id: string, uidSolicitante: string) {
   }
 
   verPerfil(uid: string) {
-  this.router.navigate(['/ver-perfil-detalle'], {
-    queryParams: { uid }
-  });
-}
-
+    this.router.navigate(['/ver-perfil-detalle'], {
+      queryParams: { uid }
+    });
+  }
 
 }

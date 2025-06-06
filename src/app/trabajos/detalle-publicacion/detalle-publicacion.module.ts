@@ -8,13 +8,17 @@ import { DetallePublicacionPageRoutingModule } from './detalle-publicacion-routi
 import { SharedModule } from '../../shared/shared.module';
 import { DetallePublicacionPage } from './detalle-publicacion.page';
 
+import { ComponentsModule } from 'src/app/components/components.module';
+
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     DetallePublicacionPageRoutingModule,
-    SharedModule 
+    SharedModule,
+    ComponentsModule 
   ],
   declarations: [DetallePublicacionPage]
 })

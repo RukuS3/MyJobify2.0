@@ -1,24 +1,38 @@
 <app-header></app-header>
 
-
 <ion-content *ngIf="perfil">
-  <ion-card>
-    <img [src]="perfil.fotoPerfil" />
-    <ion-card-header>
+  <ion-card class="perfil-card">
+    <div class="perfil-avatar-container">
+      <ion-avatar class="profile-avatar" *ngIf="perfil.fotoUrl; else defaultImage">
+        <img [src]="perfil.fotoUrl" alt="Foto de perfil" />
+      </ion-avatar>
+      <ng-template #defaultImage>
+        <ion-avatar class="profile-avatar">
+          <img src="https://e7.pngegg.com/pngimages/789/888/png-clipart-computer-icons-login-person-user-avatar-log-smiley-desktop-wallpaper.png" />
+        </ion-avatar>
+      </ng-template>
+    </div>
+
+    <ion-card-header class="card-header-center">
       <ion-card-title>{{ perfil.nombre }} {{ perfil.apellido }}</ion-card-title>
     </ion-card-header>
 
-    <ion-card-content>
-      <p *ngIf="puedeVerDatosPrivados">Celular: {{ perfil.celular }}</p>
-      <p *ngIf="puedeVerDatosPrivados">Email: {{ perfil.email }}</p>
-      <p *ngIf="puedeVerDatosPrivados">Dirección: {{ perfil.direccion }}</p>
-
-      <!-- Datos públicos que siempre se muestran -->
+    <ion-card-content class="card-content-center">
+      <p *ngIf="puedeVerDatosPrivados">Teléfono: {{ perfil.telefono }}</p>
+      <p *ngIf="puedeVerDatosPrivados">Correo: {{ perfil.email }}</p>
       <p *ngIf="!puedeVerDatosPrivados">Este usuario no ha compartido datos privados.</p>
+
+      <!-- Botón denunciar -->
+      <ion-button expand="block" color="danger" (click)="denunciarUsuario()">
+        Denunciar usuario
+      </ion-button>
+
+      <!-- Botón tarea completada -->
+      <ion-button expand="block" color="success" (click)="marcarTareaCompletada()">
+        ¿Tarea completada?
+      </ion-button>
     </ion-card-content>
   </ion-card>
 </ion-content>
 
-
-<!-- Footer -->
 <app-footer></app-footer>
