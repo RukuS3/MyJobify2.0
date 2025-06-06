@@ -1,35 +1,34 @@
 <app-header></app-header>
 
 <ion-content>
-  <ion-list *ngIf="solicitudes.length > 0; else noSolicitudes">
-    <ion-item lines="full" *ngFor="let sol of solicitudes">
+<ion-list *ngIf="solicitudes.length > 0; else noSolicitudes">
+  <ion-item *ngFor="let sol of solicitudes"  [class.clickable]="sol.estado === 'aceptada'" (click)="sol.estado === 'aceptada' ? verPerfil(sol.solicitanteUid) : null">
+    
+    <ion-thumbnail slot="start">
+      <img [src]="sol.agregarfoto || 'https://via.placeholder.com/150'" alt="Foto publicación" />
+    </ion-thumbnail>
 
-      <ion-thumbnail slot="start">
-        <img [src]="sol.agregarfoto || 'https://via.placeholder.com/150'" alt="Foto publicación" />
-      </ion-thumbnail>
+    <div class="ion-label-container">
+      <ion-label>
+        <h3>Postulación de: {{ sol.solicitanteNombre }} {{ sol.solicitanteApellido }}</h3>
+        <p><strong>Estado:</strong> {{ sol.estado }}</p>
+        <p><strong>Fecha:</strong> {{ sol.fechaSolicitud?.toDate() | date:'short' }}</p>
+      </ion-label>
+    </div>
 
-      <div class="ion-label-container">
-        <ion-label>
-          <h3>Postulación de: {{ sol.solicitanteNombre }} {{ sol.solicitanteApellido }}</h3>
-          <p><strong>Estado:</strong> {{ sol.estado }}</p>
-          <p><strong>Fecha:</strong> {{ sol.fechaSolicitud?.toDate() | date:'short' }}</p>
-        </ion-label>
-      </div>
-
-      <div class="solicitud-botones">
-        <ion-button class="solicitud-botones-btn btn-aceptar" (click)="aceptarSolicitud(sol.id)" [disabled]="sol.estado !== 'pendiente'">
+    <div class="solicitud-botones">
+      <ion-button class="solicitud-botones-btn btn-aceptar" (click)="aceptarSolicitud(sol.id, sol.solicitanteUid)" [disabled]="sol.estado !== 'pendiente'">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+      </ion-button>
+      <ion-button 
+          (click)="aceptarSolicitud(sol.id, sol.solicitanteUid)" 
+          [disabled]="sol.estado !== 'pendiente'">
           <ion-icon name="checkmark-circle-outline"></ion-icon>
-        </ion-button>
-        <ion-button class="solicitud-botones-btn btn-rechazar"
-                    (click)="confirmarRechazo(sol.id)"
-                    [disabled]="sol.estado !== 'pendiente'">
-          <ion-icon name="close-circle-outline"></ion-icon>
-        </ion-button>
-      </div>
+      </ion-button>
+    </div>
 
-    </ion-item>
-  </ion-list>
-
+  </ion-item>
+</ion-list>
 
 
   <ng-template #noSolicitudes>
@@ -39,21 +38,4 @@
   </ng-template>
 </ion-content>
 
-<ion-footer>
-  <ion-toolbar class="custom-footer">
-    <ion-buttons class="footer-buttons">
-      <ion-button fill="clear" [routerLink]="'/inicio'">
-        <ion-icon name="home" slot="icon-only"></ion-icon>
-      </ion-button>
-      <ion-button fill="clear" [routerLink]="'/save-publicacion'">
-        <ion-icon name="bookmark" slot="icon-only"></ion-icon>
-      </ion-button>
-      <ion-button fill="clear" [routerLink]="'/chat-preview'">
-        <ion-icon name="chatbubble" slot="icon-only"></ion-icon>
-      </ion-button>
-      <ion-button fill="clear" [routerLink]="'/crear-publicacion'">
-        <ion-icon name="add-circle" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-footer>
+<app-footer></app-footer>

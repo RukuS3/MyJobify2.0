@@ -5,6 +5,8 @@ import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../../shared/shared.module';
 import { EditPublicacionPageRoutingModule } from './edit-publicacion-routing.module';
 import { EditPublicacionPage } from './edit-publicacion.page';
+import { ComponentsModule } from 'src/app/components/components.module';
+
 
 @NgModule({
   imports: [
@@ -13,7 +15,8 @@ import { EditPublicacionPage } from './edit-publicacion.page';
     ReactiveFormsModule, 
     IonicModule,
     EditPublicacionPageRoutingModule,
-    SharedModule
+    SharedModule,
+    ComponentsModule
   ],
   declarations: [EditPublicacionPage]
 })

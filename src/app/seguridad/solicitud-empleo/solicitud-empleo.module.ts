@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../../shared/shared.module';
 import { SolicitudEmpleoPageRoutingModule } from './solicitud-empleo-routing.module';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 import { SolicitudEmpleoPage } from './solicitud-empleo.page';
 
@@ -14,7 +15,8 @@ import { SolicitudEmpleoPage } from './solicitud-empleo.page';
     FormsModule,
     IonicModule,
     SolicitudEmpleoPageRoutingModule,
-    SharedModule 
+    SharedModule,
+    ComponentsModule
   ],
   declarations: [SolicitudEmpleoPage]
 })

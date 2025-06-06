@@ -32,16 +32,6 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'chat-preview',
-    loadChildren: () => import('./contacto/chat-preview/chat-preview.module').then(m => m.ChatPreviewPageModule),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'chat-open',
-    loadChildren: () => import('./contacto/chat-open/chat-open.module').then(m => m.ChatOpenPageModule),
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'miperfil',
     loadChildren: () => import('./seguridad/miperfil/miperfil.module').then(m => m.MiperfilPageModule),
     canActivate: [AuthGuard]
@@ -99,6 +89,10 @@ const routes: Routes = [
     path: 'solicitud-empleo',
     loadChildren: () => import('./seguridad/solicitud-empleo/solicitud-empleo.module').then(m => m.SolicitudEmpleoPageModule),
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'ver-perfil-detalle',
+    loadChildren: () => import('./contacto/ver-perfil-detalle/ver-perfil-detalle.module').then( m => m.VerPerfilDetallePageModule)
   }
 ];
 

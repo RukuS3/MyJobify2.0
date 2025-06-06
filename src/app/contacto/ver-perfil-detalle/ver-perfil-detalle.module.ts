@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 import { IonicModule } from '@ionic/angular';
 
-import { TerminosCondicionesPageRoutingModule } from './terminos-condiciones-routing.module';
+import { VerPerfilDetallePageRoutingModule } from './ver-perfil-detalle-routing.module';
 
-import { TerminosCondicionesPage } from './terminos-condiciones.page';
+import { VerPerfilDetallePage } from './ver-perfil-detalle.page';
 import { ComponentsModule } from 'src/app/components/components.module';
 
 
@@ -15,9 +16,10 @@ import { ComponentsModule } from 'src/app/components/components.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    TerminosCondicionesPageRoutingModule,
+    VerPerfilDetallePageRoutingModule,
+    SharedModule,
     ComponentsModule
   ],
-  declarations: [TerminosCondicionesPage]
+  declarations: [VerPerfilDetallePage]
 })
-export class TerminosCondicionesPageModule {}
+export class VerPerfilDetallePageModule {}

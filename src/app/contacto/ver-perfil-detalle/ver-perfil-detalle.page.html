@@ -1,0 +1,24 @@
+<app-header></app-header>
+
+
+<ion-content *ngIf="perfil">
+  <ion-card>
+    <img [src]="perfil.fotoPerfil" />
+    <ion-card-header>
+      <ion-card-title>{{ perfil.nombre }} {{ perfil.apellido }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p *ngIf="puedeVerDatosPrivados">Celular: {{ perfil.celular }}</p>
+      <p *ngIf="puedeVerDatosPrivados">Email: {{ perfil.email }}</p>
+      <p *ngIf="puedeVerDatosPrivados">Dirección: {{ perfil.direccion }}</p>
+
+      <!-- Datos públicos que siempre se muestran -->
+      <p *ngIf="!puedeVerDatosPrivados">Este usuario no ha compartido datos privados.</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+
+<!-- Footer -->
+<app-footer></app-footer>

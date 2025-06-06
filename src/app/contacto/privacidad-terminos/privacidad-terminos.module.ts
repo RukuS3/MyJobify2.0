@@ -8,12 +8,17 @@ import { PrivacidadTerminosPageRoutingModule } from './privacidad-terminos-routi
 
 import { PrivacidadTerminosPage } from './privacidad-terminos.page';
 
+import { ComponentsModule } from 'src/app/components/components.module';
+
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PrivacidadTerminosPageRoutingModule
+    PrivacidadTerminosPageRoutingModule,
+    ComponentsModule
+
   ],
   declarations: [PrivacidadTerminosPage]
 })

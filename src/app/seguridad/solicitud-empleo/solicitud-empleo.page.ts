@@ -54,14 +54,27 @@ export class SolicitudEmpleoPage implements OnInit {
     return user ? user.uid : null;
   }
 
-  aceptarSolicitud(id: string) {
-    if (!this.usuarioActualUid) return;
-    this.router.navigate(['/chat-preview']);
-    this.afs.collection('Solicitudes').doc(this.usuarioActualUid)
-      .collection('solicitudesRecibidas').doc(id)
-      .update({ estado: 'aceptada' })
-      .catch(err => console.error('Error al aceptar solicitud:', err));
-  }
+aceptarSolicitud(id: string, uidSolicitante: string) {
+  if (!this.usuarioActualUid) return;
+
+  this.afs.collection('Solicitudes').doc(this.usuarioActualUid)
+    .collection('solicitudesRecibidas').doc(id)
+    .update({ estado: 'aceptada' })
+    .then(() => {
+      // Agregar al listado de aceptados
+      this.afs.collection('SolicitudesAceptadas').doc(this.usuarioActualUid)
+        .collection('usuariosAceptados').doc(uidSolicitante).set({
+          aceptado: true,
+          fecha: new Date()
+        });
+
+      // Navegar a perfil detalle
+      this.router.navigate(['/ver-perfil-detalle'], {
+        queryParams: { uid: uidSolicitante }
+      });
+    })
+    .catch(err => console.error('Error al aceptar solicitud:', err));
+}
 
   async confirmarRechazo(id: string) {
     const alert = await this.alertController.create({
@@ -96,4 +109,12 @@ export class SolicitudEmpleoPage implements OnInit {
       .update({ estado: 'rechazada' })
       .catch(err => console.error('Error al rechazar solicitud:', err));
   }
+
+  verPerfil(uid: string) {
+  this.router.navigate(['/ver-perfil-detalle'], {
+    queryParams: { uid }
+  });
+}
+
+
 }
