@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header *ngIf="!mostrandoVideo"></app-header>
 
 <ion-content class="ion-padding">
   <!-- Botón volver -->
@@ -13,10 +13,31 @@
     <span>Crear publicación</span>
   </div>
 
-  <!-- Imagen -->
-  <div class="foto-publicacion-container" (click)="seleccionarImagen()">
-    <img [src]="fotoPublicacion" alt="Agregar foto" class="foto-publicacion" />
+  <!-- Contenedor clickeable para agregar foto -->
+  <div class="foto-publicacion-container" *ngIf="!mostrandoVideo" (click)="abrirOpcionesFoto()">
+    <!-- La imagen debe tener la clase foto-publicacion para aplicar el CSS -->
+    <img class="foto-publicacion" [src]="fotoPublicacion" alt="Agregar Foto" />
   </div>
+
+
+  <!-- Contenedor fullscreen para la cámara -->
+  <div *ngIf="mostrandoVideo" class="camera-fullscreen">
+    <video #videoElement autoplay playsinline></video>
+
+    <div class="camera-buttons-row">
+      <button class="close-button" (click)="detenerCamara()">✕</button>
+      <button class="shutter-button" (click)="capturarFoto()"></button>
+      <button class="switch-button" (click)="cambiarCamaraWeb()">🔄</button>
+    </div>
+  </div>
+
+  <!-- Canvas oculto para capturar imagen -->
+  <canvas #canvasElement style="display:none;"></canvas>
+
+  <!-- Input file oculto -->
+  <input type="file" #fileInput (change)="seleccionarImagenDesdeInput($event)" accept="image/*" hidden />
+
+
 
   <form [formGroup]="publicacionForm" (ngSubmit)="publicar()">
     <ion-item>
@@ -44,7 +65,7 @@
       <strong>Región Metropolitana</strong>
       <ion-item>
         <ion-label color="danger">Comuna</ion-label>
-          <ion-select formControlName="comuna" color="danger" interface="popover" placeholder="Selecciona una comuna">
+        <ion-select formControlName="comuna" color="danger" interface="popover" placeholder="Selecciona una comuna">
           <ion-select-option value="santiago">Santiago</ion-select-option>
           <ion-select-option value="maipu">Maipú</ion-select-option>
           <ion-select-option value="las_condes">Las Condes</ion-select-option>
@@ -75,7 +96,6 @@
           <ion-select-option value="la_granja">La Granja</ion-select-option>
           <ion-select-option value="lo_barnechea">Lo Barnechea</ion-select-option>
           <ion-select-option value="vitacura">Vitacura</ion-select-option>
-          <ion-select-option value="cerrillos">Cerrillos</ion-select-option>
         </ion-select>
       </ion-item>
     </div>
@@ -83,7 +103,6 @@
     <ion-text color="danger" *ngIf="publicacionForm.get('comuna')?.touched && publicacionForm.get('comuna')?.invalid">
       Selecciona una comuna.
     </ion-text>
-
 
     <div class="categoria">
       <ion-item>
@@ -107,14 +126,18 @@
       </ion-item>
     </div>
 
-<ion-text color="danger" *ngIf="publicacionForm.get('categoria')?.touched && publicacionForm.get('categoria')?.invalid">
-  Selecciona una categoría.
-</ion-text>
+    <ion-text color="danger" *ngIf="publicacionForm.get('categoria')?.touched && publicacionForm.get('categoria')?.invalid">
+      Selecciona una categoría.
+    </ion-text>
 
-    <input type="file" hidden #fileInput (change)="seleccionarImagenDesdeInput($event)" />
+    <!-- input file oculto para navegador -->
+    <input type="file" hidden #fileInput accept="image/*" capture="environment" (change)="seleccionarImagenDesdeInput($event)" />
 
-  <ion-button expand="block" color="danger" type="submit" [disabled]="publicacionForm.invalid">
-    Publicar
-  </ion-button>
+    <br>
+    <br>
+    <br>
+    <ion-button expand="block" color="danger" type="submit" [disabled]="publicacionForm.invalid">
+      Publicar
+    </ion-button>
   </form>
 </ion-content>
