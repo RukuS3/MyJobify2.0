@@ -16,6 +16,9 @@ export class DetallePublicacionPage implements OnInit {
   estadoSolicitud: string | null = null;
   datosCargados: boolean = false;
 
+  // Nueva variable para guardar datos del usuario creador
+  usuarioCreador: any = null;
+
   constructor(
     private navCtrl: NavController,
     private route: ActivatedRoute,
@@ -42,10 +45,18 @@ export class DetallePublicacionPage implements OnInit {
           }
 
           if (this.publicacion?.usuarioId) {
+            this.cargarUsuarioCreador(this.publicacion.usuarioId);  // Cargar datos usuario creador
             this.cargarSolicitud();
           }
         });
       }
+    });
+  }
+
+  // Método para cargar datos del usuario creador
+  cargarUsuarioCreador(usuarioId: string) {
+    this.afs.collection('usuarios').doc(usuarioId).valueChanges().subscribe(usuario => {
+      this.usuarioCreador = usuario;
     });
   }
 

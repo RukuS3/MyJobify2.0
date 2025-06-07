@@ -209,3 +209,30 @@
     color: #856404;
   }
 }
+
+.rating-info h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #222;             /* Un color oscuro para mejor lectura */
+  margin: 0 0 4px 0;       /* Margen abajo para separar de otros elementos */
+  text-transform: capitalize;  /* Que el nombre empiece con mayúscula */
+  white-space: nowrap;     /* Que no se divida en varias líneas */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Si el nombre es muy largo, corta con "..." */
+}
+
+.rating-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.rating-info h3 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+  letter-spacing: 0.03em;
+  user-select: none; /* Para que no puedan seleccionarlo al hacer clic por error */
+}
