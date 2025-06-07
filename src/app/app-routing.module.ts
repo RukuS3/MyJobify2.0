@@ -93,7 +93,18 @@ const routes: Routes = [
   {
     path: 'ver-perfil-detalle',
     loadChildren: () => import('./contacto/ver-perfil-detalle/ver-perfil-detalle.module').then( m => m.VerPerfilDetallePageModule)
+  },
+  {
+    path: 'admin/panel',
+    loadChildren: () => import('./admin/panel/panel.module').then(m => m.PanelPageModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'denuncia-detalle/:id',
+    loadChildren: () => import('./admin/denuncia-detalle/denuncia-detalle.module').then( m => m.DenunciaDetallePageModule)
   }
+
+
 ];
 
 @NgModule({

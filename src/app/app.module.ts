@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
+// Importar módulo de notificaciones
+import { UserNotificationsModule } from './components/user-notifications/user-notifications.module';
+
 // ======== Firebase ===========
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule, PERSISTENCE } from '@angular/fire/compat/auth';
@@ -20,7 +23,6 @@ registerLocaleData(localeCl);
 @NgModule({
   declarations: [
     AppComponent
-    
   ],
   imports: [
     BrowserModule,
@@ -30,6 +32,7 @@ registerLocaleData(localeCl);
     FormsModule,
     AngularFireAuthModule,
     IonicStorageModule.forRoot(),
+    UserNotificationsModule 
   ],
   providers: [
     { provide: PERSISTENCE, useValue: 'local' },

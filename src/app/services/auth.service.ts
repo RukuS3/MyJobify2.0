@@ -14,33 +14,42 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.afAuth.signInWithEmailAndPassword(email, password)
-      .then((cred) => {
+      .then(async (cred) => {
+        const uid = cred.user?.uid;
+        const userDoc = await this.firestore.collection('usuarios').doc(uid).get().toPromise();
+        const userData: any = userDoc?.data();
+
         localStorage.setItem('user', JSON.stringify(cred.user));
+        localStorage.setItem('userRole', userData?.role || 'user'); 
+
         return cred;
       });
   }
 
   register(email: string, password: string, rut: string, nombre: string, apellido: string, telefono: string) {
-  return this.afAuth.createUserWithEmailAndPassword(email, password)
-    .then(cred => {
-      const uid = cred.user?.uid;
-      return this.firestore.collection('usuarios').doc(uid).set({
-        uid: uid,
-        email: email,
-        rut: rut,
-        nombre: nombre,
-        apellido: apellido,
-        telefono: telefono,
-        fotoUrl: '', 
-        fechaCreacion: new Date()
-      });
-    })
-    .catch(err => {
-      console.error('Error al registrar en Firestore:', err);
-      throw err;
-    });
-}
+    return this.afAuth.createUserWithEmailAndPassword(email, password)
+      .then(cred => {
+        const uid = cred.user?.uid;
 
+        const rol = email === 'admin@miapp.com' ? 'admin' : 'user'; 
+
+        return this.firestore.collection('usuarios').doc(uid).set({
+          uid: uid,
+          email: email,
+          rut: rut,
+          nombre: nombre,
+          apellido: apellido,
+          telefono: telefono,
+          fotoUrl: '',
+          fechaCreacion: new Date(),
+          role: rol 
+        });
+      })
+      .catch(err => {
+        console.error('Error al registrar en Firestore:', err);
+        throw err;
+      });
+  }
 
   resetPassword(email: string) {
     return this.afAuth.sendPasswordResetEmail(email);
@@ -48,6 +57,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('user');
+    localStorage.removeItem('userRole');
     return this.afAuth.signOut();
   }
 
