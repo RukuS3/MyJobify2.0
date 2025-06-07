@@ -32,6 +32,40 @@
     </ion-card-content>
   </ion-card>
 
+  <!-- Formulario de Denuncia -->
+  <ion-card *ngIf="mostrarPanelDenuncia" class="form-denuncia">
+    <ion-card-header>
+      <ion-card-title>Denunciar Usuario</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item class="select-item">
+        <ion-label position="floating">Motivo</ion-label>
+        <ion-select [(ngModel)]="motivoDenuncia" interface="popover">
+          <ion-select-option value="acoso">Acoso</ion-select-option>
+          <ion-select-option value="fraude">Fraude</ion-select-option>
+          <ion-select-option value="comportamientoInapropiado">Comportamiento inapropiado</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item class="textarea-item">
+        <ion-label position="floating">Descripción</ion-label>
+        <ion-textarea [(ngModel)]="detalleDenuncia"></ion-textarea>
+      </ion-item>
+
+      <ion-item class="file-item">
+        <ion-label>Adjuntar Prueba</ion-label>
+        <input type="file" (change)="onFileSelected($event)" accept="image/*,.pdf" />
+      </ion-item>
+
+      <ion-button expand="block" color="danger" (click)="enviarDenuncia()">
+        Enviar Denuncia
+      </ion-button>
+      <ion-button expand="block" fill="clear" (click)="mostrarPanelDenuncia = false">
+        Cancelar
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
   <!-- Tarjeta flotante para calificación -->
   <ion-card *ngIf="mostrarIsla" class="isla-calificacion">
     <ion-card-header class="header-calificacion">
@@ -55,7 +89,6 @@
       <ion-button color="success" (click)="enviarCalificacion()" class="btn-centro">
         Enviar Calificación
       </ion-button>
-
     </ion-card-content>
   </ion-card>
 </ion-content>

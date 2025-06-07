@@ -83,3 +83,68 @@ ion-button {
   width: 200px;        // Puedes ajustar el ancho que quieras
   margin: 15px auto;      // Centra horizontalmente
 }
+
+.form-denuncia {
+  padding: 16px;
+  background: #fff4f4;
+  border-radius: 12px;
+  margin: 16px;
+  box-shadow: 0 2px 8px rgba(255, 0, 0, 0.1);
+}
+
+ion-card-title {
+  text-align: center;
+  color: #b00020;
+  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.select-item,
+.textarea-item,
+.file-item {
+  --background: #ffffff;
+  --border-radius: 8px;
+  margin-bottom: 16px;
+  padding: 6px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+ion-select,
+ion-textarea {
+  width: 100%;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  font-size: 14px;
+}
+
+input[type="file"] {
+  margin-top: 8px;
+  display: block;
+  width: 100%;
+  font-size: 14px;
+  color: #333;
+}
+
+ion-button {
+  margin-top: 20px;
+  width: 100%;
+  border-radius: 20px;
+}
+
+ion-alert {
+  --background: #ffffff;
+  --color: #000000;
+  --button-color: #b00020;
+
+  .alert-title,
+  .alert-message {
+    color: #000000 !important;
+  }
+
+  .alert-button {
+    color: #b00020 !important;
+    font-weight: bold;
+  }
+}
