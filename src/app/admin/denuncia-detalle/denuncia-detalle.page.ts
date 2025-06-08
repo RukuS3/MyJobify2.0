@@ -24,10 +24,8 @@ export class DenunciaDetallePage implements OnInit {
         if (data) {
           const fecha = data['fecha']?.toDate ? data['fecha'].toDate() : data['fecha'];
           const denunciadoUid = data['denunciadoUid'];
-          
-          // Obtener nombre completo del denunciado
           const denunciadoNombre = await this.firebaseService.obtenerNombreUsuario(denunciadoUid);
-          
+
           this.denuncia = {
             id,
             ...data,
@@ -39,52 +37,40 @@ export class DenunciaDetallePage implements OnInit {
     }
   }
 
-
   aprobarDenuncia() {
     if (!this.denuncia) return;
 
-    // 1. Actualizar la denuncia en la base, por ejemplo marcándola como aprobada
-    this.firebaseService.actualizarDenuncia(this.denuncia.id, { estado: 'aprobada' })
-      .then(() => {
-        // 2. Eliminar la denuncia para que desaparezca de la lista
-        return this.firebaseService.eliminarDenuncia(this.denuncia.id);
-      })
-      .then(() => {
-        // 3. Crear notificación para el denunciante
-        this.firebaseService.enviarNotificacion(
-          this.denuncia.denuncianteUid,
-          `Tu denuncia contra ${this.denuncia.denunciadoNombre} ha sido aprobada.`
-        );
+    const { denuncianteUid, denunciadoUid, denunciadoNombre, id } = this.denuncia;
 
-        // 4. Crear notificación para el denunciado
-        this.firebaseService.enviarNotificacion(
-          this.denuncia.denunciadoUid,
-          `Se ha aprobado una denuncia en tu contra. Por favor revisa tu cuenta.`
-        );
+    if (!denuncianteUid || !denunciadoUid) {
+      alert('Error: Faltan datos del denunciante o denunciado.');
+      return;
+    }
 
-        // 5. Mensaje o navegación después de aprobar
-        alert('Denuncia aprobada, eliminada y notificaciones enviadas.');
-        this.goBack();
-      })
-      .catch(error => {
-        console.error('Error al aprobar denuncia', error);
-        alert('Error al aprobar la denuncia.');
-      });
+    Promise.all([
+      this.firebaseService.enviarNotificacion(denuncianteUid, `Tu denuncia contra ${denunciadoNombre} ha sido aprobada.`),
+      this.firebaseService.enviarNotificacion(denunciadoUid, `Se ha aprobado una denuncia en tu contra. Por favor revisa tu cuenta.`)
+    ])
+    .then(() => this.firebaseService.eliminarDenuncia(id))
+    .then(() => {
+      alert('Denuncia aprobada y notificaciones enviadas correctamente.');
+      this.goBack();
+    })
+    .catch(err => {
+      console.error('Error al procesar la denuncia:', err);
+      alert('Error al aprobar la denuncia.');
+    });
   }
-
 
   rechazarDenuncia() {
     if (!this.denuncia) return;
 
-    // 1. Eliminar la denuncia de la base de datos
     this.firebaseService.eliminarDenuncia(this.denuncia.id)
-      .then(() => {
-        // 2. Crear notificación para el denunciante
-        this.firebaseService.enviarNotificacion(
+      .then(() => this.firebaseService.enviarNotificacion(
           this.denuncia.denuncianteUid,
           `Tu denuncia contra ${this.denuncia.denunciadoNombre} fue rechazada.`
-        );
-
+        ))
+      .then(() => {
         alert('Denuncia rechazada y notificación enviada.');
         this.goBack();
       })
@@ -94,8 +80,11 @@ export class DenunciaDetallePage implements OnInit {
       });
   }
 
-
   goBack() {
     this.router.navigate(['admin/panel']);
+  }
+
+  esImagen = (url: string): boolean => {
+    return /\.(jpeg|jpg|png|gif|webp)$/i.test(url);
   }
 }

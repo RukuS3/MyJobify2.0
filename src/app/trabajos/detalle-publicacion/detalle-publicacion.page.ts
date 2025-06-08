@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { NavController } from '@ionic/angular';
+import { NavController, AlertController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-detalle-publicacion',
@@ -15,15 +15,16 @@ export class DetallePublicacionPage implements OnInit {
   solicitudEnviada: boolean = false;
   estadoSolicitud: string | null = null;
   datosCargados: boolean = false;
-
-  // Nueva variable para guardar datos del usuario creador
   usuarioCreador: any = null;
+  reporteEnviado: boolean = false;  // <-- variable para saber si ya reportó
 
   constructor(
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private afs: AngularFirestore,
-    private auth: AngularFireAuth
+    private auth: AngularFireAuth,
+    private alertCtrl: AlertController,
+    private toastCtrl: ToastController
   ) {}
 
   goBack() {
@@ -45,15 +46,15 @@ export class DetallePublicacionPage implements OnInit {
           }
 
           if (this.publicacion?.usuarioId) {
-            this.cargarUsuarioCreador(this.publicacion.usuarioId);  // Cargar datos usuario creador
+            this.cargarUsuarioCreador(this.publicacion.usuarioId);
             this.cargarSolicitud();
+            this.verificarReporte();  // <-- llama a la función para checar reporte
           }
         });
       }
     });
   }
 
-  // Método para cargar datos del usuario creador
   cargarUsuarioCreador(usuarioId: string) {
     this.afs.collection('usuarios').doc(usuarioId).valueChanges().subscribe(usuario => {
       this.usuarioCreador = usuario;
@@ -87,22 +88,31 @@ export class DetallePublicacionPage implements OnInit {
     }
   }
 
+  // Nuevo método para verificar si ya se reportó la publicación
+  verificarReporte() {
+    if (!this.usuarioActualUid || !this.publicacion?.id) {
+      this.reporteEnviado = false;
+      return;
+    }
+
+    this.afs.collection('Reportes', ref =>
+      ref.where('publicacionId', '==', this.publicacion.id)
+         .where('reportanteUid', '==', this.usuarioActualUid)
+    ).valueChanges().subscribe(reportes => {
+      this.reporteEnviado = reportes.length > 0;
+    }, error => {
+      console.error('Error al verificar reporte:', error);
+      this.reporteEnviado = false;
+    });
+  }
+
   async enviarSolicitud() {
     if (!this.usuarioActualUid || !this.publicacion) return;
     if (this.usuarioActualUid === this.publicacion.usuarioId) return;
-
-    if (this.solicitudEnviada && this.estadoSolicitud === 'rechazada') {
-      console.warn('Solicitud fue rechazada anteriormente. No se puede volver a enviar.');
-      return;
-    }
-
-    if (this.solicitudEnviada) {
-      console.warn('Ya hay una solicitud enviada.');
-      return;
-    }
+    if (this.solicitudEnviada && this.estadoSolicitud === 'rechazada') return;
+    if (this.solicitudEnviada) return;
 
     try {
-      //  1. Obtener los datos del usuario solicitante y tiparlos
       const usuarioDoc = await this.afs.collection('usuarios').doc(this.usuarioActualUid).get().toPromise();
       const usuarioData = usuarioDoc?.data() as {
         nombre: string;
@@ -110,12 +120,8 @@ export class DetallePublicacionPage implements OnInit {
         fotoUrl: string;
       };
 
-      if (!usuarioData) {
-        console.error('No se encontraron datos del usuario solicitante');
-        return;
-      }
+      if (!usuarioData) return;
 
-      // 2. Construir solicitud incluyendo los datos del usuario
       const solicitud = {
         publicacionId: this.publicacion.id,
         solicitanteUid: this.usuarioActualUid,
@@ -127,7 +133,6 @@ export class DetallePublicacionPage implements OnInit {
         agregarfoto: this.publicacion.agregarfoto || ''
       };
 
-      // 3. Guardar la solicitud
       await this.afs.collection('Solicitudes')
         .doc(this.publicacion.usuarioId)
         .collection('solicitudesRecibidas')
@@ -139,5 +144,77 @@ export class DetallePublicacionPage implements OnInit {
     } catch (error) {
       console.error('Error al enviar solicitud:', error);
     }
+  }
+
+  async abrirDialogoReporte() {
+    const alert = await this.alertCtrl.create({
+      header: 'Reportar publicación',
+      cssClass: 'custom-alert',
+      inputs: [
+        {
+          name: 'motivo',
+          type: 'textarea',
+          placeholder: 'Describe el motivo del reporte...',
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'alert-button-cancel'
+        },
+        {
+          text: 'Enviar',
+          cssClass: 'alert-button-confirm',
+          handler: (data) => {
+            if (!data.motivo || data.motivo.trim().length < 5) {
+              this.mostrarToast('Debes ingresar un motivo válido para reportar.', 'warning');
+              return false;
+            }
+            this.enviarReporte(data.motivo.trim());
+            return true;
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async enviarReporte(motivo: string) {
+    if (!this.usuarioActualUid || !this.publicacion) return;
+
+    try {
+      const reporte = {
+        publicacionId: this.publicacion.id,
+        reportanteUid: this.usuarioActualUid,
+        motivo: motivo,
+        fechaReporte: new Date(),
+        estado: 'pendiente',
+        titulo: this.publicacion.titulo,
+        descripcion: this.publicacion.descripcion,
+        agregarfoto: this.publicacion.agregarfoto || ''
+      };
+
+      await this.afs.collection('Reportes').add(reporte);
+      this.mostrarToast('Gracias por tu reporte. Será revisado pronto.', 'success');
+
+      // Actualiza la variable para ocultar botón y mostrar mensaje
+      this.reporteEnviado = true;
+
+    } catch (error) {
+      console.error('Error al enviar reporte:', error);
+      this.mostrarToast('Hubo un error al enviar el reporte.', 'danger');
+    }
+  }
+
+  async mostrarToast(mensaje: string, color: 'success' | 'warning' | 'danger') {
+    const toast = await this.toastCtrl.create({
+      message: mensaje,
+      duration: 3000,
+      color: color,
+      position: 'bottom'
+    });
+    toast.present();
   }
 }

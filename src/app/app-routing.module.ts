@@ -102,6 +102,10 @@ const routes: Routes = [
   {
     path: 'denuncia-detalle/:id',
     loadChildren: () => import('./admin/denuncia-detalle/denuncia-detalle.module').then( m => m.DenunciaDetallePageModule)
+  },
+  {
+    path: 'detalle-pub-admin/:id',
+    loadChildren: () => import('./admin/detalle-pub-admin/detalle-pub-admin.module').then(m => m.DetallePubAdminPageModule)
   }
 
 

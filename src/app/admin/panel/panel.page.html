@@ -30,20 +30,21 @@
   </ng-template>
 
   <h2 class="ion-margin-top">Reportes de Publicaciones</h2>
-  <pre>{{ reportesPublicacion | json }}</pre> <!-- DEBUG -->
   <ion-list *ngIf="reportesPublicacion && reportesPublicacion.length > 0; else noReportes">
-    <ion-item *ngFor="let reporte of reportesPublicacion">
+    <ion-item *ngFor="let reporte of reportesPublicacion" [routerLink]="['/detalle-pub-admin', reporte.publicacionId]">
+      <ion-thumbnail slot="start" *ngIf="reporte.imagen">
+        <img [src]="reporte.imagen" alt="Imagen publicación" />
+      </ion-thumbnail>
       <ion-label>
-        <h3>Publicación ID: {{ reporte.publicacionId }}</h3>
+        <h3>{{ reporte.titulo }}</h3>
         <p>{{ reporte.motivo }}</p>
         <small>{{ reporte.fechaReporte | date:'medium' }}</small>
       </ion-label>
-      <ion-button color="danger" slot="end" (click)="eliminarPublicacion(reporte.publicacionId)">
-        Eliminar publicación
-      </ion-button>
     </ion-item>
   </ion-list>
   <ng-template #noReportes>
     <p>No hay reportes de publicaciones.</p>
   </ng-template>
+
+
 </ion-content>

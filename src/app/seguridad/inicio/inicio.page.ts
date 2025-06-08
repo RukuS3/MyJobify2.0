@@ -10,15 +10,11 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
   standalone: false
 })
 export class InicioPage implements OnInit {
-
   publicaciones: any[] = [];
   filtroTexto: string = '';
   limite: number = 5;
   favoritosIds: string[] = [];
   categoriaSeleccionada: string = 'todas';
-  notificaciones: any[] = [];
-
-  mostrarNotificacionesFlag = false;  
 
   constructor(
     private afs: AngularFirestore,
@@ -27,8 +23,6 @@ export class InicioPage implements OnInit {
   ) {}
 
   ngOnInit() {
-   
-
     this.afs.collection('Publicacion', ref => ref.orderBy('fecha', 'desc'))
       .snapshotChanges()
       .subscribe(data => {
@@ -51,43 +45,8 @@ export class InicioPage implements OnInit {
           .subscribe(favs => {
             this.favoritosIds = favs.map(f => f.payload.doc.id);
           });
-
-        this.afs.collection(`notificaciones/${user.uid}/userNotifications`, ref => ref.orderBy('fecha', 'desc'))
-          .valueChanges()
-          .subscribe(notifs => {
-            this.notificaciones = notifs;
-
-            if (this.notificaciones.length > 0) {
-              // Obtener la fecha del último cierre guardada en localStorage
-              const ultimaFechaCierreStr = localStorage.getItem('ultimaFechaCierreNotificaciones');
-              const ultimaFechaCierre = ultimaFechaCierreStr ? new Date(ultimaFechaCierreStr) : null;
-
-              // Obtener la fecha de la notificación más reciente
-              const fechaNotificacionMasReciente = this.notificaciones[0].fecha?.toDate ? this.notificaciones[0].fecha.toDate() : new Date(this.notificaciones[0].fecha);
-
-              // Mostrar notificaciones si no se cerraron o si hay notificaciones nuevas
-              if (!ultimaFechaCierre || fechaNotificacionMasReciente > ultimaFechaCierre) {
-                this.mostrarNotificacionesFlag = true;
-              } else {
-                this.mostrarNotificacionesFlag = false;
-              }
-            } else {
-              this.mostrarNotificacionesFlag = false;
-            }
-          });
       }
     });
-  }
-
-  onCerrarNotificaciones() {
-    this.mostrarNotificacionesFlag = false;
-
-    if (this.notificaciones.length > 0) {
-      const fechaMasReciente = this.notificaciones[0].fecha?.toDate ? this.notificaciones[0].fecha.toDate() : new Date(this.notificaciones[0].fecha);
-      localStorage.setItem('ultimaFechaCierreNotificaciones', fechaMasReciente.toISOString());
-    } else {
-      localStorage.setItem('ultimaFechaCierreNotificaciones', new Date().toISOString());
-    }
   }
 
   verDetalle(id: string) {

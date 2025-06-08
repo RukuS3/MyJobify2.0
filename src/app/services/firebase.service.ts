@@ -37,24 +37,26 @@ export class FirebaseService {
 
   async eliminarPublicacion(idPublicacion: string): Promise<void> {
     try {
-      // Eliminar la publicación
+      // Obtener publicación para saber el usuarioId
+      const doc = await this.firestore.collection('Publicacion').doc(idPublicacion).get().toPromise();
+      if (!doc.exists) throw new Error('Publicación no encontrada');
+
+      const publicacionData = doc.data() as any;
+      const usuarioId = publicacionData.usuarioId;
+
+      // Eliminar publicación
       await this.firestore.collection('Publicacion').doc(idPublicacion).delete();
 
-      // Obtener el UID autenticado
-      const user = await this.auth.currentUser;
-      if (!user) throw new Error('Usuario no autenticado');
-      const uid = user.uid;
-
-      // Eliminar solicitudes relacionadas (si existen)
+      // Eliminar solicitudes relacionadas
       const solicitudesSnapshot = await this.firestore.collection('Solicitudes')
-        .doc(uid)
+        .doc(usuarioId)
         .collection('solicitudesRecibidas', ref => ref.where('publicacionId', '==', idPublicacion))
         .get()
         .toPromise();
 
       for (const solicitudDoc of solicitudesSnapshot.docs) {
         await this.firestore.collection('Solicitudes')
-          .doc(uid)
+          .doc(usuarioId)
           .collection('solicitudesRecibidas')
           .doc(solicitudDoc.id)
           .delete();
@@ -116,10 +118,9 @@ export class FirebaseService {
   }
 
   // ----------------------
-  // Métodos nuevos para Admin Panel
+  // Métodos para Admin Panel y denuncias
   // ----------------------
 
-  // Obtener denuncias ordenadas por fecha con conversión a Date
   obtenerDenuncias() {
     return this.firestore.collection('denunciasUsuarios', ref => ref.orderBy('fecha', 'desc'))
       .snapshotChanges()
@@ -137,7 +138,7 @@ export class FirebaseService {
   }
 
   obtenerReportesPublicacion() {
-    return this.firestore.collection('reportesPublicacion', ref => ref.orderBy('fechaReporte', 'desc'))
+    return this.firestore.collection('Reportes', ref => ref.orderBy('fechaReporte', 'desc'))
       .snapshotChanges()
       .pipe(
         map(actions => actions.map(a => {
@@ -145,7 +146,11 @@ export class FirebaseService {
           const id = a.payload.doc.id;
           return {
             id,
-            ...data,
+            publicacionId: data.publicacionId,
+            reportanteUid: data.reportanteUid,
+            motivo: data.motivo,
+            titulo: data.titulo || 'Sin título',
+            estado: data.estado,
             fechaReporte: data.fechaReporte?.toDate ? data.fechaReporte.toDate() : data.fechaReporte
           };
         }))
@@ -156,27 +161,23 @@ export class FirebaseService {
     return this.firestore.collection('denunciasUsuarios').doc(id).valueChanges();
   }
 
-  // Actualiza campos de una denuncia
   actualizarDenuncia(id: string, data: any) {
     return this.firestore.collection('denunciasUsuarios').doc(id).update(data);
   }
 
-  // Elimina una denuncia
   eliminarDenuncia(id: string) {
     return this.firestore.collection('denunciasUsuarios').doc(id).delete();
   }
 
-  // Envía una notificación (la estructura puede ser diferente según tu diseño)
   enviarNotificacion(uid: string, mensaje: string) {
     const notificacion = {
       mensaje,
       fecha: new Date(),
       leida: false
     };
-    return this.firestore.collection('notificaciones').doc(uid).collection('userNotifications').add(notificacion);
+    return this.firestore.collection('usuarios').doc(uid).collection('notificaciones').add(notificacion);
   }
 
-  // Nuevo método para obtener el nombre de usuario por UID
   async obtenerNombreUsuario(uid: string): Promise<string> {
     try {
       const doc = await this.firestore.collection('usuarios').doc(uid).get().toPromise();
@@ -195,7 +196,35 @@ export class FirebaseService {
   }
 
   obtenerNotificacionesUsuario(uid: string) {
-    return this.firestore.collection('notificaciones').doc(uid).collection('userNotifications', ref => ref.orderBy('fecha', 'desc'))
+    return this.firestore.collection('usuarios').doc(uid).collection('notificaciones', ref => ref.orderBy('fecha', 'desc'))
       .valueChanges({ idField: 'id' });
+  }
+
+  obtenerPublicacionPorId(id: string): Promise<any> {
+    return this.firestore.collection('Publicacion').doc(id).get().toPromise().then(doc => {
+      if (doc.exists) {
+        return doc.data();
+      } else {
+        throw new Error('Publicación no encontrada');
+      }
+    });
+  }
+
+  actualizarPublicacion(idPublicacion: string, data: any) {
+    return this.firestore.collection('Publicacion').doc(idPublicacion).update(data);
+  }
+
+  async obtenerUsuarioPorUid(uid: string): Promise<any> {
+    try {
+      const doc = await this.firestore.collection('usuarios').doc(uid).get().toPromise();
+      if (doc.exists) {
+        return doc.data();
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('Error obteniendo usuario:', error);
+      return null;
+    }
   }
 }

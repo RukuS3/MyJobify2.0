@@ -21,7 +21,6 @@ export class PanelPage implements OnInit {
   async cargarDenuncias() {
     this.firebaseService.obtenerDenuncias().subscribe({
       next: async (data: any[]) => {
-        // Convertir y añadir nombre denunciado
         this.denuncias = await Promise.all(
           data.map(async denuncia => {
             const fechaDate = denuncia.fecha ? new Date(denuncia.fecha) : null;
@@ -43,9 +42,23 @@ export class PanelPage implements OnInit {
     });
   }
 
-  cargarReportes() {
-    this.firebaseService.obtenerReportesPublicacion().subscribe(data => {
-      this.reportesPublicacion = data;
+  async cargarReportes() {
+    this.firebaseService.obtenerReportesPublicacion().subscribe(async (data) => {
+      this.reportesPublicacion = await Promise.all(data.map(async reporte => {
+        let imagen = '';
+
+        try {
+          const publicacionData = await this.firebaseService.obtenerPublicacionPorId(reporte.publicacionId);
+          imagen = publicacionData?.agregarfoto || '';
+        } catch (e) {
+          console.warn('No se pudo obtener la publicación:', e);
+        }
+
+        return {
+          ...reporte,
+          imagen
+        };
+      }));
     });
   }
 
