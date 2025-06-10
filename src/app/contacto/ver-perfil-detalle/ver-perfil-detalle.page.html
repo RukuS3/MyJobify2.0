@@ -15,6 +15,22 @@
 
     <ion-card-header class="card-header-center">
       <ion-card-title>{{ perfil.nombre }} {{ perfil.apellido }}</ion-card-title>
+
+      <ion-card-subtitle *ngIf="perfil.promedioCalificacion">
+        ⭐ {{ perfil.promedioCalificacion }} / 5 ({{ perfil.totalCalificaciones }} calificaciones)
+      </ion-card-subtitle>
+
+      <ion-card-subtitle *ngIf="perfil.totalCalificaciones === 0">
+        Aún no tiene calificaciones.
+      </ion-card-subtitle>
+
+      <div *ngIf="perfil.promedioCalificacion">
+        <ion-icon
+          *ngFor="let estrella of [1,2,3,4,5]"
+          [name]="estrella <= perfil.promedioCalificacion ? 'star' : 'star-outline'"
+          color="warning">
+        </ion-icon>
+      </div>
     </ion-card-header>
 
     <ion-card-content class="card-content-center">
@@ -22,9 +38,24 @@
       <p *ngIf="puedeVerDatosPrivados">Correo: {{ perfil.email }}</p>
       <p *ngIf="!puedeVerDatosPrivados">Este usuario no ha compartido datos privados.</p>
 
-      <ion-button expand="block" color="danger" (click)="denunciarUsuario()">
+      <!-- Mensaje si es tu propio perfil -->
+      <div *ngIf="esPerfilPropio" style="margin: 10px 0; font-weight: bold; color: gray;">
+        Este es tu perfil.
+      </div>
+
+      <!-- Botón denunciar solo si NO es tu perfil y NO has denunciado antes -->
+      <ion-button
+        *ngIf="!esPerfilPropio && !yaDenuncio"
+        expand="block"
+        color="danger"
+        (click)="denunciarUsuario()">
         Denunciar usuario
       </ion-button>
+
+      <!-- Mensaje si ya denunciaste -->
+      <div *ngIf="!esPerfilPropio && yaDenuncio" style="margin: 10px 0; color: #d9534f; font-weight: bold;">
+        Ya has denunciado a este usuario.
+      </div>
 
       <ion-button expand="block" color="success" (click)="mostrarIsla = true">
         ¿Tarea terminada?

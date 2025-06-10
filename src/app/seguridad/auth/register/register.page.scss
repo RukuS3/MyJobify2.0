@@ -49,3 +49,56 @@
   margin-top: 10px;
   font-weight: bold;
 }
+
+.custom-input-item {
+  --background: #fff;
+  --border-color: #ccc;
+  --border-width: 1px;
+  --border-style: solid;
+  --padding-start: 12px;
+  --inner-padding-end: 12px;
+  --border-radius: 8px;
+  margin: 8px 0;
+  font-size: 14px;
+  width: 100%;
+  background: #fff;
+}
+
+.phone-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 8px 0;
+  background: #fff;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.flag-icon {
+  width: 20px;
+  height: 14px;
+  margin-right: 6px;
+  border-radius: 2px;
+  object-fit: cover;
+}
+
+.phone-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  background: transparent;
+}
+
+.sms-send-button {
+  --background: #000000;
+  --color: #e00101;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  font-size: 0.85em;
+  height: 36px;
+  --border-radius: 4px;
+}

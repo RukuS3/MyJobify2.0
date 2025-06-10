@@ -16,7 +16,7 @@ export class DetallePublicacionPage implements OnInit {
   estadoSolicitud: string | null = null;
   datosCargados: boolean = false;
   usuarioCreador: any = null;
-  reporteEnviado: boolean = false;  // <-- variable para saber si ya reportó
+  reporteEnviado: boolean = false;
 
   constructor(
     private navCtrl: NavController,
@@ -48,7 +48,7 @@ export class DetallePublicacionPage implements OnInit {
           if (this.publicacion?.usuarioId) {
             this.cargarUsuarioCreador(this.publicacion.usuarioId);
             this.cargarSolicitud();
-            this.verificarReporte();  // <-- llama a la función para checar reporte
+            this.verificarReporte();
           }
         });
       }
@@ -58,13 +58,26 @@ export class DetallePublicacionPage implements OnInit {
   cargarUsuarioCreador(usuarioId: string) {
     this.afs.collection('usuarios').doc(usuarioId).valueChanges().subscribe(usuario => {
       this.usuarioCreador = usuario;
+
+      // Obtener promedio de calificaciones del usuario
+      this.afs.collection(`usuarios/${usuarioId}/calificaciones`)
+        .valueChanges()
+        .subscribe((calificaciones: any[]) => {
+          if (calificaciones.length > 0) {
+            const total = calificaciones.reduce((sum, cal) => sum + (cal.calificacion || 0), 0);
+            const promedio = total / calificaciones.length;
+            this.usuarioCreador.promedioCalificacion = Number(promedio.toFixed(1));
+          } else {
+            this.usuarioCreador.promedioCalificacion = null;
+          }
+        });
     });
   }
 
   cargarSolicitud() {
     if (this.usuarioActualUid && this.publicacion?.usuarioId && this.publicacion.id) {
       this.afs.collection('Solicitudes').doc(this.publicacion.usuarioId)
-        .collection('solicitudesRecibidas', ref => 
+        .collection('solicitudesRecibidas', ref =>
           ref
             .where('solicitanteUid', '==', this.usuarioActualUid)
             .where('publicacionId', '==', this.publicacion.id)
@@ -88,7 +101,6 @@ export class DetallePublicacionPage implements OnInit {
     }
   }
 
-  // Nuevo método para verificar si ya se reportó la publicación
   verificarReporte() {
     if (!this.usuarioActualUid || !this.publicacion?.id) {
       this.reporteEnviado = false;
@@ -199,7 +211,6 @@ export class DetallePublicacionPage implements OnInit {
       await this.afs.collection('Reportes').add(reporte);
       this.mostrarToast('Gracias por tu reporte. Será revisado pronto.', 'success');
 
-      // Actualiza la variable para ocultar botón y mostrar mensaje
       this.reporteEnviado = true;
 
     } catch (error) {
@@ -217,4 +228,30 @@ export class DetallePublicacionPage implements OnInit {
     });
     toast.present();
   }
+
+
+  obtenerEstrellas(promedio: number): string[] {
+    const estrellas: string[] = [];
+    const enteras = Math.floor(promedio);
+    const decimal = promedio - enteras;
+
+    for (let i = 0; i < enteras; i++) {
+      estrellas.push('star');
+    }
+
+    if (decimal >= 0.25 && decimal < 0.75) {
+      estrellas.push('star-half');
+    } else if (decimal >= 0.75) {
+      estrellas.push('star');
+    }
+
+    while (estrellas.length < 5) {
+      estrellas.push('star-outline');
+    }
+
+    return estrellas;
+  }
+
+
+
 }
